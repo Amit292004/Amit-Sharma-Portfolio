@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Mail, Sparkles } from "lucide-react";
+import { ArrowRight, Download, Mail, Sparkles, Eye } from "lucide-react";
 
 type ProfileProp = {
   name: string;
@@ -125,6 +125,16 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             >
               <Mail className="w-4 h-4 mr-2" />
               <span>Contact Me</span>
+            </a>
+
+            <a 
+              href="/resume.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              <span>View Resume</span>
             </a>
 
             <a 

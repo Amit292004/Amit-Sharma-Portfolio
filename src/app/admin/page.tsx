@@ -11,9 +11,17 @@ export default async function AdminDashboard() {
     redirect("/login");
   }
 
-  const projects = await prisma.project.findMany({ orderBy: { createdAt: "desc" } });
-  const achievements = await prisma.achievement.findMany({ orderBy: { createdAt: "desc" } });
-  let profile = await prisma.profile.findFirst();
+  let projects: any[] = [];
+  let achievements: any[] = [];
+  let profile: any = null;
+
+  try {
+    projects = await prisma.project.findMany({ orderBy: { createdAt: "desc" } });
+    achievements = await prisma.achievement.findMany({ orderBy: { createdAt: "desc" } });
+    profile = await prisma.profile.findFirst();
+  } catch {
+    // Graceful fallback if DB fails
+  }
 
   if (!profile) {
     profile = {

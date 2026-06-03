@@ -72,7 +72,23 @@ export default function ProjectsSection({ projects }: { projects: Project[] }) {
               </div>
             </motion.div>
           )) : (
-             <div className="col-span-full text-center text-gray-500 py-10">No projects to showcase yet. Add some from the Admin Panel!</div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="col-span-full flex flex-col items-center justify-center py-20 gap-6"
+            >
+              <div className="relative">
+                <div className="w-20 h-20 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                  <Code className="w-9 h-9 text-blue-400" />
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-xl animate-pulse -z-10" />
+              </div>
+              <div className="text-center">
+                <p className="text-white font-bold text-xl mb-2">Projects Coming Soon</p>
+                <p className="text-gray-500 text-sm max-w-sm">Real projects are being uploaded. Check back shortly!</p>
+              </div>
+            </motion.div>
           )}
         </div>
       </div>

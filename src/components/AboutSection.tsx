@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Briefcase, Cpu, Database, GraduationCap, Laptop, Sparkles, Users } from "lucide-react";
+import { BookOpen, Briefcase, Cpu, Database, Laptop, Sparkles, Users } from "lucide-react";
 
 export default function AboutSection() {
   const focusAreas = [
@@ -24,12 +24,6 @@ export default function AboutSection() {
       color: "text-emerald-400"
     },
     {
-      title: "GATE DA Preparation",
-      description: "Preparing for the GATE Data Science & AI paper, covering advanced math, probability, and database theory.",
-      icon: GraduationCap,
-      color: "text-pink-400"
-    },
-    {
       title: "Educational Technology",
       description: "Creating accessible platforms and resources to empower the next generation of engineers.",
       icon: BookOpen,
@@ -40,6 +34,12 @@ export default function AboutSection() {
       description: "Served 6 months as an SME at Chegg India, solving advanced academic problems and mentoring 30+ students across CS & Math domains.",
       icon: Briefcase,
       color: "text-yellow-400"
+    },
+    {
+      title: "Student Ambassador — Internshala",
+      description: "Promoted internship and learning opportunities to a student community, strengthening outreach and communication skills.",
+      icon: Users,
+      color: "text-blue-400"
     }
   ];
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User } from "lucide-react";
+import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User, FileText, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -51,6 +51,9 @@ export default function DashboardClient({
     available: initialProfile.available,
   });
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const [resumeUploaded, setResumeUploaded] = useState(false);
+  const [resumeError, setResumeError] = useState("");
 
   const [activeModal, setActiveModal] = useState<"project" | "achievement" | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,6 +75,50 @@ export default function DashboardClient({
     date: "",
     iconUrl: ""
   });
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      setResumeError("Only PDF files are allowed.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setResumeError("File must be under 5MB.");
+      return;
+    }
+    setResumeError("");
+    setUploadingResume(true);
+    setResumeUploaded(false);
+    const formData = new FormData();
+    formData.append("resume", file);
+    try {
+      const res = await fetch("/api/upload-resume", { method: "POST", body: formData });
+      if (res.ok) {
+        setResumeUploaded(true);
+        setTimeout(() => setResumeUploaded(false), 4000);
+      } else {
+        const d = await res.json();
+        setResumeError(d.error || "Upload failed");
+      }
+    } catch {
+      setResumeError("Error uploading resume");
+    } finally {
+      setUploadingResume(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleResumeDelete = async () => {
+    if (!confirm("Remove current resume?")) return;
+    try {
+      const res = await fetch("/api/upload-resume", { method: "DELETE" });
+      if (res.ok) alert("Resume removed successfully.");
+      else alert("Failed to remove resume.");
+    } catch {
+      alert("Error removing resume.");
+    }
+  };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,6 +278,74 @@ export default function DashboardClient({
             </button>
           </div>
         </header>
+
+        {/* Resume Management — full width */}
+        <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl mb-8">
+          <div className="flex items-center gap-2 mb-6">
+            <FileText className="w-5 h-5 text-emerald-500" />
+            <h2 className="text-xl md:text-2xl font-bold">Resume</h2>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            {/* Upload Area */}
+            <label className="flex-1 cursor-pointer">
+              <div className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-2xl p-8 transition-all duration-300 ${
+                uploadingResume
+                  ? "border-emerald-500/50 bg-emerald-500/5"
+                  : resumeUploaded
+                  ? "border-emerald-400/60 bg-emerald-500/10"
+                  : "border-white/10 hover:border-emerald-500/40 hover:bg-emerald-500/5"
+              }`}>
+                {uploadingResume ? (
+                  <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
+                ) : resumeUploaded ? (
+                  <CheckCircle className="w-8 h-8 text-emerald-400" />
+                ) : (
+                  <Upload className="w-8 h-8 text-gray-500" />
+                )}
+                <div className="text-center">
+                  <p className="font-semibold text-white text-sm">
+                    {uploadingResume ? "Uploading..." : resumeUploaded ? "Resume Uploaded!" : "Click to upload Resume PDF"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">PDF only · Max 5MB</p>
+                </div>
+              </div>
+              <input
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={handleResumeUpload}
+                className="hidden"
+                disabled={uploadingResume}
+              />
+            </label>
+
+            {/* Actions */}
+            <div className="flex flex-col gap-3 min-w-[160px]">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold hover:bg-emerald-500/20 transition-all"
+              >
+                <FileText className="w-4 h-4" />
+                View Current Resume
+              </a>
+              <button
+                onClick={handleResumeDelete}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-semibold hover:bg-red-500/20 transition-all cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4" />
+                Remove Resume
+              </button>
+            </div>
+          </div>
+
+          {resumeError && (
+            <p className="mt-3 text-sm text-red-400 flex items-center gap-1">
+              <X className="w-3.5 h-3.5" /> {resumeError}
+            </p>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Settings (Col 1) */}
