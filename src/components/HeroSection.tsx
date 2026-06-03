@@ -128,7 +128,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             </a>
 
             <a 
-              href="/resume.pdf" 
+              href="/api/resume" 
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
@@ -138,7 +138,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             </a>
 
             <a 
-              href="/resume.pdf" 
+              href="/api/resume" 
               download
               className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-gray-300 transition-all duration-300 bg-transparent rounded-2xl hover:text-white cursor-pointer text-sm"
             >

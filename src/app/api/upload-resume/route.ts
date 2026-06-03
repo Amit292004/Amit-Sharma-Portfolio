@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { writeFile, unlink } from "fs/promises";
-import path from "path";
-import { existsSync } from "fs";
+import { put, del, list } from "@vercel/blob";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -27,22 +25,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File size must be under 5MB" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const filePath = path.join(process.cwd(), "public", "resume.pdf");
-
-    // Remove old resume if exists
-    if (existsSync(filePath)) {
-      await unlink(filePath);
+    // Delete old resume blob if it exists
+    const { blobs } = await list({ prefix: "resume" });
+    for (const blob of blobs) {
+      await del(blob.url);
     }
 
-    await writeFile(filePath, buffer);
+    // Upload to Vercel Blob
+    const blob = await put("resume.pdf", file, {
+      access: "public",
+      addRandomSuffix: false, // Ensures predictable name (but we'll delete old ones anyway to be safe)
+    });
 
-    return NextResponse.json({ success: true, url: "/resume.pdf" });
+    return NextResponse.json({ success: true, url: blob.url });
   } catch (error) {
     console.error("Resume upload error:", error);
-    return NextResponse.json({ error: "Failed to upload resume" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to upload resume to Blob Storage" }, { status: 500 });
   }
 }
 
@@ -53,9 +51,9 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
-    const filePath = path.join(process.cwd(), "public", "resume.pdf");
-    if (existsSync(filePath)) {
-      await unlink(filePath);
+    const { blobs } = await list({ prefix: "resume" });
+    for (const blob of blobs) {
+      await del(blob.url);
     }
     return NextResponse.json({ success: true });
   } catch (error) {

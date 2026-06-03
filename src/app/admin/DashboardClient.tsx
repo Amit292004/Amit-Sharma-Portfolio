@@ -322,7 +322,7 @@ export default function DashboardClient({
             {/* Actions */}
             <div className="flex flex-col gap-3 min-w-[160px]">
               <a
-                href="/resume.pdf"
+                href="/api/resume"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold hover:bg-emerald-500/20 transition-all"
