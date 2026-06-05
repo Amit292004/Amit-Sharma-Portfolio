@@ -31,7 +31,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 px-6 lg:px-20">
+    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-20">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,7 +41,7 @@ export default function ContactSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Let's <span className="text-gradient">Connect</span></h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">Have a project in mind or just want to say hi? I'd love to hear from you.</p>
+          <p className="text-gray-400 max-w-2xl mx-auto">Have a <span className="text-blue-400 font-semibold">project in mind</span> or just want to <span className="text-purple-400 font-semibold">say hi</span>? I'd love to hear from you.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -82,7 +82,7 @@ export default function ContactSection() {
             {/* Social Links */}
             <div>
               <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-4">Connect with me</p>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-3">
                 {/* GitHub */}
                 <a
                   href="https://github.com/Amit292004"

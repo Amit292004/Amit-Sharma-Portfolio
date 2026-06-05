@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model AdminUser {
@@ -39,7 +40,7 @@ model Project {
   id          String   @id @default(cuid())
   title       String
   description String
-  techStack   String   // Stored as comma-separated values or JSON string
+  techStack   String
   imageUrl    String?
   liveLink    String?
   githubLink  String?
@@ -52,6 +53,7 @@ model Message {
   name      String
   email     String
   message   String
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
@@ -63,4 +65,59 @@ model Profile {
   available   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Resume {
+  id        String   @id @default("singleton")
+  data      Bytes
+  filename  String   @default("resume.pdf")
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // e.g. "Frontend", "Backend", "AI/ML", "Tools"
+  proficiency Int      @default(80) // 0-100
+  iconName    String?  // lucide or simple-icons name
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Certification {
+  id            String   @id @default(cuid())
+  title         String
+  issuer        String
+  dateCompleted String
+  credentialUrl String?
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  company   String?
+  content   String
+  avatarUrl String?
+  rating    Int      @default(5) // 1-5
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String
+  content       String
+  coverImageUrl String?
+  published     Boolean  @default(false)
+  readingTime   Int      @default(5) // minutes
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

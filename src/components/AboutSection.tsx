@@ -44,9 +44,9 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#050505] to-gray-900/10">
+    <section id="about" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-20 bg-gradient-to-b from-[#050505] to-gray-900/10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           
           {/* Left Block: Bio Story */}
           <motion.div 
@@ -67,31 +67,31 @@ export default function AboutSection() {
             
             <div className="text-gray-400 space-y-4 text-base md:text-lg leading-relaxed font-sans">
               <p>
-                As a B.Tech Computer Science Engineering student, my journey is fueled by a dual passion for building cutting-edge software and sharing knowledge. I maintain a continuous learning mindset, always looking to explore new horizons.
+                As a <span className="text-blue-400 font-semibold">B.Tech Computer Science Engineering</span> student, my journey is fueled by a dual passion for building <span className="text-purple-400 font-semibold">cutting-edge software</span> and <span className="text-yellow-400 font-semibold">sharing knowledge</span>. I maintain a <span className="text-emerald-400 font-semibold">continuous learning mindset</span>, always looking to explore new horizons.
               </p>
               <p>
-                My core interest lies at the intersection of robust Full-Stack Development and Artificial Intelligence/Machine Learning. I love solving complex structural problems through code optimizations and algorithmic thinking.
+                My core interest lies at the intersection of <span className="text-blue-400 font-semibold">robust Full-Stack Development</span> and <span className="text-purple-400 font-semibold">Artificial Intelligence / Machine Learning</span>. I love solving <span className="text-pink-400 font-semibold">complex structural problems</span> through <span className="text-emerald-400 font-semibold">code optimizations</span> and <span className="text-orange-400 font-semibold">algorithmic thinking</span>.
               </p>
               <p>
-                Beyond writing code, I'm deeply committed to education. I served <span className="text-yellow-400 font-semibold">6 months as a Subject Matter Expert at Chegg India</span>, where I solved academic problems and mentored <span className="text-blue-400 font-semibold">30+ students</span> across CS and Math domains.
+                Beyond writing code, I'm deeply committed to education. I have personally taught <span className="text-blue-400 font-semibold">30+ students</span> from <span className="text-white font-semibold">Class 1–12</span> in <span className="text-purple-400 font-semibold">Maths, Physics & Chemistry</span>, covering both <span className="text-white font-semibold">CBSE and State Board</span> curricula. Additionally, I served <span className="text-yellow-400 font-semibold">6 months as a Subject Matter Expert at Chegg India</span>, solving advanced academic problems online.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-2">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="glass-panel p-4 rounded-2xl border border-white/5 flex items-center gap-3"
+                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                  <Users className="w-5 h-5 text-blue-400" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-white">30<span className="text-blue-400">+</span></p>
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Students Taught</p>
+                  <p className="text-lg sm:text-2xl font-black text-white">30<span className="text-blue-400">+</span></p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Class 1–12 Taught</p>
                 </div>
               </motion.div>
               <motion.div
@@ -99,14 +99,29 @@ export default function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="glass-panel p-4 rounded-2xl border border-white/5 flex items-center gap-3"
+                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0">
-                  <Briefcase className="w-5 h-5 text-yellow-400" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0">
+                  <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-white">6<span className="text-yellow-400">mo</span></p>
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Chegg India SME</p>
+                  <p className="text-lg sm:text-2xl font-black text-white">6<span className="text-yellow-400">mo</span></p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Chegg India SME</p>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
+              >
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-lg sm:text-2xl font-black text-white">8.47<span className="text-emerald-400 text-xs sm:text-sm font-bold"> GPA</span></p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">CGPA</p>
                 </div>
               </motion.div>
             </div>

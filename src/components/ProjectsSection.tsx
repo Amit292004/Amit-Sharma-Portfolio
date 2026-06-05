@@ -15,7 +15,7 @@ type Project = {
 
 export default function ProjectsSection({ projects }: { projects: Project[] }) {
   return (
-    <section id="projects" className="py-24 px-6 lg:px-20 bg-gradient-to-b from-transparent to-gray-900/20">
+    <section id="projects" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-20 bg-gradient-to-b from-transparent to-gray-900/20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

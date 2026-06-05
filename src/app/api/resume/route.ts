@@ -1,22 +1,30 @@
-import { NextResponse } from "next/server";
-import { list } from "@vercel/blob";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/resume
-// Dynamically redirects to the latest Vercel Blob URL for the resume
-export async function GET() {
+// Streams the resume PDF stored in the database
+export async function GET(req: NextRequest) {
   try {
-    const { blobs } = await list({ prefix: "resume", limit: 1 });
-    
-    if (blobs.length > 0) {
-      // Return a redirect to the actual Vercel Blob URL
-      return NextResponse.redirect(blobs[0].url);
-    } else {
-      // Fallback if no resume is uploaded yet
-      return NextResponse.redirect(new URL("/", process.env.NEXTAUTH_URL || "http://localhost:3000"));
+    const resume = await prisma.resume.findUnique({ where: { id: "singleton" } });
+
+    if (!resume) {
+      // No resume uploaded yet — redirect to home using the request's own origin
+      const origin = req.nextUrl.origin;
+      return NextResponse.redirect(new URL("/", origin));
     }
+
+    return new NextResponse(new Uint8Array(resume.data), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename="${resume.filename}"`,
+        "Content-Length": resume.data.length.toString(),
+        // Allow browsers to cache for 1 hour
+        "Cache-Control": "public, max-age=3600",
+      },
+    });
   } catch (error) {
-    console.error("Failed to fetch resume blob URL:", error);
-    // Fallback to local /resume.pdf if running locally without BLOB_READ_WRITE_TOKEN
-    return NextResponse.redirect(new URL("/resume.pdf", process.env.NEXTAUTH_URL || "http://localhost:3000"));
+    console.error("Failed to fetch resume:", error);
+    return NextResponse.json({ error: "Failed to fetch resume" }, { status: 500 });
   }
 }

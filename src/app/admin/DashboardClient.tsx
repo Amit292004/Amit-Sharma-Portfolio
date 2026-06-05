@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User, FileText, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User, FileText, CheckCircle, MessageSquare, Mail, Code2, Star, MailOpen } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -28,6 +28,30 @@ type Profile = {
   role: string;
   avatarUrl: string | null;
   available: boolean;
+};
+
+type Message = {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+};
+
+type Skill = {
+  id: string;
+  name: string;
+  category: string;
+  proficiency: number;
+};
+
+type Cert = {
+  id: string;
+  title: string;
+  issuer: string;
+  dateCompleted: string;
+  credentialUrl?: string | null;
 };
 
 type DashboardClientProps = {
@@ -57,6 +81,77 @@ export default function DashboardClient({
 
   const [activeModal, setActiveModal] = useState<"project" | "achievement" | null>(null);
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<"content" | "messages" | "skills" | "certs">("content");
+
+  // Messages
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(false);
+
+  // Skills
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skillForm, setSkillForm] = useState({ name: "", category: "Frontend", proficiency: 80 });
+
+  // Certs
+  const [certs, setCerts] = useState<Cert[]>([]);
+  const [certForm, setCertForm] = useState({ title: "", issuer: "", dateCompleted: "", credentialUrl: "" });
+
+  const loadMessages = async () => {
+    setMessagesLoading(true);
+    try {
+      const res = await fetch("/api/messages");
+      if (res.ok) setMessages(await res.json());
+    } catch {}
+    finally { setMessagesLoading(false); }
+  };
+
+  const loadSkills = async () => {
+    const res = await fetch("/api/skills");
+    if (res.ok) setSkills(await res.json());
+  };
+
+  const loadCerts = async () => {
+    const res = await fetch("/api/certifications");
+    if (res.ok) setCerts(await res.json());
+  };
+
+  useEffect(() => {
+    if (activeTab === "messages") loadMessages();
+    if (activeTab === "skills") loadSkills();
+    if (activeTab === "certs") loadCerts();
+  }, [activeTab]);
+
+  const handleMarkRead = async (id: string, read: boolean) => {
+    await fetch("/api/messages", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, read }) });
+    setMessages(msgs => msgs.map(m => m.id === id ? { ...m, read } : m));
+  };
+
+  const handleDeleteMessage = async (id: string) => {
+    if (!confirm("Delete this message?")) return;
+    await fetch("/api/messages", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    setMessages(msgs => msgs.filter(m => m.id !== id));
+  };
+
+  const handleAddSkill = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch("/api/skills", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(skillForm) });
+    if (res.ok) { const s = await res.json(); setSkills([...skills, s]); setSkillForm({ name: "", category: "Frontend", proficiency: 80 }); }
+  };
+
+  const handleDeleteSkill = async (id: string) => {
+    await fetch("/api/skills", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    setSkills(skills.filter(s => s.id !== id));
+  };
+
+  const handleAddCert = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch("/api/certifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(certForm) });
+    if (res.ok) { const c = await res.json(); setCerts([...certs, c]); setCertForm({ title: "", issuer: "", dateCompleted: "", credentialUrl: "" }); }
+  };
+
+  const handleDeleteCert = async (id: string) => {
+    await fetch("/api/certifications", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    setCerts(certs.filter(c => c.id !== id));
+  };
 
   // Project Form State
   const [projectForm, setProjectForm] = useState({
@@ -256,15 +351,22 @@ export default function DashboardClient({
     }
   };
 
+  const TABS = [
+    { key: "content", label: "Content", icon: Briefcase },
+    { key: "messages", label: "Messages", icon: MessageSquare, badge: messages.filter(m => !m.read).length },
+    { key: "skills", label: "Skills", icon: Code2 },
+    { key: "certs", label: "Certs", icon: Award },
+  ] as const;
+
   return (
     <div className="min-h-screen bg-[#050505] text-white p-6 md:p-12 font-sans selection:bg-blue-500/30">
       <div className="max-w-6xl mx-auto">
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12 border-b border-white/10 pb-8">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-white/10 pb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
               Admin Dashboard
             </h1>
-            <p className="text-gray-400 text-sm mt-1">Manage your portfolio achievements and projects dynamically</p>
+            <p className="text-gray-400 text-sm mt-1">Manage your portfolio content dynamically</p>
           </div>
           <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start">
             <Link href="/" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
@@ -279,6 +381,27 @@ export default function DashboardClient({
           </div>
         </header>
 
+        {/* Tab Navigation */}
+        <div className="flex gap-2 mb-8 p-1 bg-white/[0.03] border border-white/5 rounded-2xl w-fit">
+          {TABS.map(({ key, label, icon: Icon, badge }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key as any)}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+                activeTab === key ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "text-gray-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {label}
+              {badge !== undefined && badge > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{badge}</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Content Tab */}
+        {activeTab === "content" && <>
         {/* Resume Management — full width */}
         <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-2xl mb-8">
           <div className="flex items-center gap-2 mb-6">
@@ -516,6 +639,148 @@ export default function DashboardClient({
             </div>
           </div>
         </div>
+        </> }
+
+        {/* Messages Tab */}
+        {activeTab === "messages" && (
+          <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+            <div className="flex items-center gap-2 mb-6">
+              <Mail className="w-5 h-5 text-blue-500" />
+              <h2 className="text-xl font-bold">Messages Inbox</h2>
+              <span className="ml-auto text-xs text-gray-500">{messages.length} total · {messages.filter(m => !m.read).length} unread</span>
+            </div>
+            {messagesLoading ? (
+              <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-blue-400" /></div>
+            ) : messages.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">No messages yet.</div>
+            ) : (
+              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                {messages.map(msg => (
+                  <div key={msg.id} className={`p-5 rounded-2xl border transition-all ${msg.read ? "bg-white/[0.02] border-white/5" : "bg-blue-500/5 border-blue-500/20"}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          {!msg.read && <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />}
+                          <span className="font-bold text-white">{msg.name}</span>
+                          <span className="text-gray-500 text-xs">{msg.email}</span>
+                          <span className="text-gray-600 text-xs ml-auto">{new Date(msg.createdAt).toLocaleDateString("en-IN")}</span>
+                        </div>
+                        <p className="text-sm text-gray-300 leading-relaxed">{msg.message}</p>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button onClick={() => handleMarkRead(msg.id, !msg.read)} title={msg.read ? "Mark unread" : "Mark read"}
+                          className="p-2 rounded-lg bg-white/5 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 transition-all cursor-pointer">
+                          {msg.read ? <Mail className="w-4 h-4" /> : <MailOpen className="w-4 h-4" />}
+                        </button>
+                        <button onClick={() => handleDeleteMessage(msg.id)}
+                          className="p-2 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-all cursor-pointer">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Skills Tab */}
+        {activeTab === "skills" && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Add Skill</h2>
+              <form onSubmit={handleAddSkill} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Skill Name *</label>
+                  <input required type="text" value={skillForm.name} onChange={e => setSkillForm({...skillForm, name: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. React" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Category *</label>
+                  <select value={skillForm.category} onChange={e => setSkillForm({...skillForm, category: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    {["Frontend","Backend","AI/ML","Languages","Tools","Security"].map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Proficiency: {skillForm.proficiency}%</label>
+                  <input type="range" min={10} max={100} step={5} value={skillForm.proficiency}
+                    onChange={e => setSkillForm({...skillForm, proficiency: Number(e.target.value)})}
+                    className="w-full accent-blue-500" />
+                </div>
+                <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all cursor-pointer">Add Skill</button>
+              </form>
+            </div>
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Current Skills ({skills.length})</h2>
+              <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+                {skills.map(s => (
+                  <div key={s.id} className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/5 rounded-xl">
+                    <div>
+                      <span className="font-semibold text-white text-sm">{s.name}</span>
+                      <span className="ml-2 text-xs text-gray-500">{s.category} · {s.proficiency}%</span>
+                    </div>
+                    <button onClick={() => handleDeleteSkill(s.id)} className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+                {skills.length === 0 && <p className="text-center text-gray-500 py-8 text-sm">No skills added yet.</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Certifications Tab */}
+        {activeTab === "certs" && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Add Certification</h2>
+              <form onSubmit={handleAddCert} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Title *</label>
+                  <input required type="text" value={certForm.title} onChange={e => setCertForm({...certForm, title: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="e.g. AWS Cloud Practitioner" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Issuer *</label>
+                  <input required type="text" value={certForm.issuer} onChange={e => setCertForm({...certForm, issuer: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="e.g. AWS, Google, NIELIT" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Date Completed *</label>
+                  <input required type="text" value={certForm.dateCompleted} onChange={e => setCertForm({...certForm, dateCompleted: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="e.g. Jun 2025" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Credential URL (optional)</label>
+                  <input type="text" value={certForm.credentialUrl} onChange={e => setCertForm({...certForm, credentialUrl: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="https://..." />
+                </div>
+                <button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-xl transition-all cursor-pointer">Add Certification</button>
+              </form>
+            </div>
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Current Certifications ({certs.length})</h2>
+              <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+                {certs.map(c => (
+                  <div key={c.id} className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/5 rounded-xl">
+                    <div>
+                      <p className="font-semibold text-white text-sm">{c.title}</p>
+                      <p className="text-xs text-gray-500">{c.issuer} · {c.dateCompleted}</p>
+                    </div>
+                    <button onClick={() => handleDeleteCert(c.id)} className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+                {certs.length === 0 && <p className="text-center text-gray-500 py-8 text-sm">No certifications added yet.</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* Project Modal */}

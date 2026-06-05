@@ -44,7 +44,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
   }, [subIndex, reverse, index]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-6 lg:px-20 bg-[#050505]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 sm:px-6 lg:px-20 bg-[#050505]">
       {/* Background Gradients */}
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-[#050505] to-[#050505] -z-10" />
       <motion.div
@@ -79,10 +79,10 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-2"
           >
-            <h2 className="text-lg md:text-xl font-medium text-gray-400 tracking-wide uppercase">
+            <h2 className="text-sm md:text-xl font-medium text-gray-400 tracking-wide uppercase">
               Hello, I am
             </h2>
-            <h1 className="text-6xl md:text-8xl font-black leading-none tracking-tighter text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter text-white">
               {profile.name}<span className="text-blue-500">.</span>
             </h1>
             
@@ -101,7 +101,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-base md:text-lg text-gray-400 max-w-xl leading-relaxed font-sans"
           >
-            A B.Tech Computer Science Engineering Student. Developer, educator, content creator, and problem solver. Driven by curiosities in Full Stack Web Development and AI/ML.
+            A <span className="text-blue-400 font-semibold">B.Tech Computer Science Engineering</span> Student. <span className="text-purple-400 font-semibold">Developer</span>, <span className="text-yellow-400 font-semibold">educator</span>, <span className="text-pink-400 font-semibold">content creator</span>, and <span className="text-emerald-400 font-semibold">problem solver</span>. Driven by curiosities in <span className="text-blue-400 font-semibold">Full Stack Web Development</span> and <span className="text-purple-400 font-semibold">AI/ML</span>.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -109,19 +109,19 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="flex flex-wrap items-center gap-4 pt-4"
+            className="flex flex-wrap items-center gap-3 pt-4"
           >
             <a 
               href="#projects" 
-              className="group relative inline-flex items-center justify-center px-6 py-3.5 font-bold text-white transition-all duration-300 bg-blue-600 border border-transparent rounded-2xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 focus:outline-none overflow-hidden cursor-pointer"
+              className="group relative inline-flex items-center justify-center px-5 py-3 font-bold text-white transition-all duration-300 bg-blue-600 border border-transparent rounded-2xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 focus:outline-none overflow-hidden cursor-pointer text-sm"
             >
-              <span className="mr-2 text-sm">View Projects</span>
+              <span className="mr-2">View Projects</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
 
             <a 
               href="#contact" 
-              className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
+              className="group inline-flex items-center justify-center px-5 py-3 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
             >
               <Mail className="w-4 h-4 mr-2" />
               <span>Contact Me</span>
@@ -131,7 +131,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
               href="/api/resume" 
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
+              className="group inline-flex items-center justify-center px-5 py-3 font-bold text-white transition-all duration-300 bg-transparent border border-white/10 rounded-2xl hover:bg-white/5 focus:outline-none glass-panel cursor-pointer text-sm"
             >
               <Eye className="w-4 h-4 mr-2" />
               <span>View Resume</span>
@@ -140,7 +140,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             <a 
               href="/api/resume" 
               download
-              className="group inline-flex items-center justify-center px-6 py-3.5 font-bold text-gray-300 transition-all duration-300 bg-transparent rounded-2xl hover:text-white cursor-pointer text-sm"
+              className="group inline-flex items-center justify-center px-5 py-3 font-bold text-gray-300 transition-all duration-300 bg-transparent rounded-2xl hover:text-white cursor-pointer text-sm"
             >
               <Download className="w-4 h-4 mr-2 group-hover:translate-y-0.5 transition-transform" />
               <span>Download Resume</span>
@@ -154,7 +154,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative w-72 h-[360px] md:w-80 md:h-[420px]"
+            className="relative w-52 h-[260px] sm:w-64 sm:h-[320px] md:w-72 md:h-[360px] lg:w-80 lg:h-[420px]"
           >
             {/* Outer glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30 animate-pulse" />

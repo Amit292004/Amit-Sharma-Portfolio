@@ -42,4 +42,8 @@ next-env.d.ts
 
 /src/generated/prisma
 
+# uploaded user files (resume, profile images)
+/public/uploads/
+
 .vercel
+.env*.local
