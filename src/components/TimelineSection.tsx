@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { GraduationCap, Trophy } from "lucide-react";
+import SpotlightCard from "./SpotlightCard";
 
 type Achievement = {
   id: string;
@@ -56,13 +57,13 @@ export default function TimelineSection({ achievements, courses }: TimelineProps
                   <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-[#050505] text-blue-500 shadow shrink-0 z-10 glass-panel">
                     <Trophy className="w-4 h-4" />
                   </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl glass-panel group-hover:border-blue-500/30 transition-colors">
+                  <SpotlightCard className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl group-hover:border-blue-500/30 transition-colors bg-[#050505]">
                     <div className="flex items-center justify-between space-x-2 mb-1">
                       <div className="font-bold text-white">{item.title}</div>
                       <time className="font-mono text-xs text-blue-400">{item.date}</time>
                     </div>
                     <div className="text-sm text-gray-400">{item.description}</div>
-                  </div>
+                  </SpotlightCard>
                 </motion.div>
               )) : (
                 <p className="text-gray-500 ml-12">No achievements added yet.</p>
@@ -89,13 +90,13 @@ export default function TimelineSection({ achievements, courses }: TimelineProps
                   <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-[#050505] text-purple-500 shadow shrink-0 z-10 glass-panel">
                     <GraduationCap className="w-4 h-4" />
                   </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl glass-panel group-hover:border-purple-500/30 transition-colors">
+                  <SpotlightCard className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl group-hover:border-purple-500/30 transition-colors bg-[#050505]">
                     <div className="flex items-center justify-between space-x-2 mb-1">
                       <div className="font-bold text-white">{item.title}</div>
                       <time className="font-mono text-xs text-purple-400">{item.dateCompleted}</time>
                     </div>
                     <div className="text-sm text-gray-400">{item.institution}</div>
-                  </div>
+                  </SpotlightCard>
                 </motion.div>
               )) : (
                 <p className="text-gray-500 ml-12">No courses added yet.</p>

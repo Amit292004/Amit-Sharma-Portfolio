@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User, FileText, CheckCircle, MessageSquare, Mail, Code2, Star, MailOpen } from "lucide-react";
+import { LogOut, Plus, Trash2, X, Loader2, Calendar, Briefcase, Award, Upload, User, FileText, CheckCircle, MessageSquare, Mail, Code2, Star, MailOpen, Building } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -54,6 +54,15 @@ type Cert = {
   credentialUrl?: string | null;
 };
 
+type Internship = {
+  id: string;
+  role: string;
+  company: string;
+  duration: string;
+  description: string;
+  certificateUrl?: string | null;
+};
+
 type DashboardClientProps = {
   initialProjects: Project[];
   initialAchievements: Achievement[];
@@ -81,7 +90,7 @@ export default function DashboardClient({
 
   const [activeModal, setActiveModal] = useState<"project" | "achievement" | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"content" | "messages" | "skills" | "certs">("content");
+  const [activeTab, setActiveTab] = useState<"content" | "messages" | "skills" | "certs" | "internships">("content");
 
   // Messages
   const [messages, setMessages] = useState<Message[]>([]);
@@ -94,6 +103,10 @@ export default function DashboardClient({
   // Certs
   const [certs, setCerts] = useState<Cert[]>([]);
   const [certForm, setCertForm] = useState({ title: "", issuer: "", dateCompleted: "", credentialUrl: "" });
+
+  // Internships
+  const [internships, setInternships] = useState<Internship[]>([]);
+  const [internshipForm, setInternshipForm] = useState({ role: "", company: "", duration: "", description: "", certificateUrl: "" });
 
   const loadMessages = async () => {
     setMessagesLoading(true);
@@ -114,10 +127,16 @@ export default function DashboardClient({
     if (res.ok) setCerts(await res.json());
   };
 
+  const loadInternships = async () => {
+    const res = await fetch("/api/internships");
+    if (res.ok) setInternships(await res.json());
+  };
+
   useEffect(() => {
     if (activeTab === "messages") loadMessages();
     if (activeTab === "skills") loadSkills();
     if (activeTab === "certs") loadCerts();
+    if (activeTab === "internships") loadInternships();
   }, [activeTab]);
 
   const handleMarkRead = async (id: string, read: boolean) => {
@@ -151,6 +170,17 @@ export default function DashboardClient({
   const handleDeleteCert = async (id: string) => {
     await fetch("/api/certifications", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setCerts(certs.filter(c => c.id !== id));
+  };
+
+  const handleAddInternship = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await fetch("/api/internships", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(internshipForm) });
+    if (res.ok) { const i = await res.json(); setInternships([...internships, i]); setInternshipForm({ role: "", company: "", duration: "", description: "", certificateUrl: "" }); }
+  };
+
+  const handleDeleteInternship = async (id: string) => {
+    await fetch("/api/internships", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    setInternships(internships.filter(i => i.id !== id));
   };
 
   // Project Form State
@@ -352,10 +382,11 @@ export default function DashboardClient({
   };
 
   const TABS = [
-    { key: "content", label: "Content", icon: Briefcase },
+    { key: "content", label: "Content", icon: Briefcase, badge: undefined },
     { key: "messages", label: "Messages", icon: MessageSquare, badge: messages.filter(m => !m.read).length },
-    { key: "skills", label: "Skills", icon: Code2 },
-    { key: "certs", label: "Certs", icon: Award },
+    { key: "skills", label: "Skills", icon: Code2, badge: undefined },
+    { key: "certs", label: "Certs", icon: Award, badge: undefined },
+    { key: "internships", label: "Internships", icon: Building, badge: undefined },
   ] as const;
 
   return (
@@ -776,6 +807,67 @@ export default function DashboardClient({
                   </div>
                 ))}
                 {certs.length === 0 && <p className="text-center text-gray-500 py-8 text-sm">No certifications added yet.</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Internships Tab */}
+        {activeTab === "internships" && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Add Internship</h2>
+              <form onSubmit={handleAddInternship} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Role *</label>
+                  <input required type="text" value={internshipForm.role} onChange={e => setInternshipForm({...internshipForm, role: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. Software Engineering Intern" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Company *</label>
+                  <input required type="text" value={internshipForm.company} onChange={e => setInternshipForm({...internshipForm, company: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. Google" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Duration *</label>
+                  <input required type="text" value={internshipForm.duration} onChange={e => setInternshipForm({...internshipForm, duration: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. May 2025 - Aug 2025" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Description *</label>
+                  <textarea required value={internshipForm.description} onChange={e => setInternshipForm({...internshipForm, description: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 h-24 resize-none" placeholder="What did you do?" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Certificate Google Drive Link</label>
+                  <input type="text" value={internshipForm.certificateUrl} onChange={e => setInternshipForm({...internshipForm, certificateUrl: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="https://drive.google.com/..." />
+                </div>
+                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all cursor-pointer">Add Internship</button>
+              </form>
+            </div>
+            <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+              <h2 className="text-xl font-bold mb-6">Current Internships ({internships.length})</h2>
+              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                {internships.map(i => (
+                  <div key={i.id} className="p-4 bg-white/[0.03] border border-white/5 rounded-xl flex justify-between items-start">
+                    <div>
+                      <p className="font-bold text-white text-base">{i.role}</p>
+                      <p className="text-sm text-indigo-400 font-medium">{i.company}</p>
+                      <p className="text-xs text-gray-500 mb-2">{i.duration}</p>
+                      <p className="text-xs text-gray-400 line-clamp-2">{i.description}</p>
+                      {i.certificateUrl && (
+                        <a href={i.certificateUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-xs text-blue-400 hover:text-blue-300 underline">
+                          View Certificate
+                        </a>
+                      )}
+                    </div>
+                    <button onClick={() => handleDeleteInternship(i.id)} className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer shrink-0 ml-2">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+                {internships.length === 0 && <p className="text-center text-gray-500 py-8 text-sm">No internships added yet.</p>}
               </div>
             </div>
           </div>

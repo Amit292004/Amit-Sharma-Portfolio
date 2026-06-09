@@ -7,10 +7,11 @@ import TimelineSection from "@/components/TimelineSection";
 import ProjectsSection from "@/components/ProjectsSection";
 
 import CertificationsSection from "@/components/CertificationsSection";
+import InternshipsSection from "@/components/InternshipsSection";
 
 import ContactSection from "@/components/ContactSection";
 import SplashScreen from "@/components/SplashScreen";
-import BottomMobileNav from "@/components/BottomMobileNav";
+
 
 export default async function Home() {
   let achievements: any[] = [];
@@ -19,16 +20,18 @@ export default async function Home() {
   let profile: any = null;
   let skills: any[] = [];
   let certifications: any[] = [];
+  let internships: any[] = [];
 
 
   try {
-    [achievements, courses, projects, profile, skills, certifications] = await Promise.all([
+    [achievements, courses, projects, profile, skills, certifications, internships] = await Promise.all([
       prisma.achievement.findMany({ orderBy: { createdAt: 'desc' } }),
       prisma.course.findMany({ orderBy: { createdAt: 'desc' } }),
       prisma.project.findMany({ orderBy: { createdAt: 'desc' } }),
       prisma.profile.findFirst(),
       prisma.skill.findMany({ orderBy: [{ category: 'asc' }, { sortOrder: 'asc' }] }),
       prisma.certification.findMany({ orderBy: { createdAt: 'desc' } }),
+      prisma.internship.findMany({ orderBy: { createdAt: 'desc' } }),
     ]);
   } catch {
     // DB not available — components will use built-in fallback data
@@ -74,6 +77,8 @@ export default async function Home() {
       <Divider />
       <ProjectsSection projects={projects} />
 
+      <Divider />
+      <InternshipsSection internships={internships} />
 
       <Divider />
       <TimelineSection
@@ -91,8 +96,6 @@ export default async function Home() {
       <footer className="py-8 text-center text-gray-600 text-sm border-t border-white/5 bg-black pb-24 md:pb-8">
         <p>© {new Date().getFullYear()} Amit Sharma. Built with Next.js & ❤️</p>
       </footer>
-
-      <BottomMobileNav />
     </main>
   );
 }

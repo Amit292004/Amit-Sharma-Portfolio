@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Mail, Sparkles, Eye } from "lucide-react";
+import Particles from "./Particles";
+import ThreeDCanvas from "./ThreeDCanvas";
 
 type ProfileProp = {
   name: string;
@@ -45,7 +47,8 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 sm:px-6 lg:px-20 bg-[#050505]">
-      {/* Background Gradients */}
+      {/* Background Gradients & Particles */}
+      <Particles />
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-[#050505] to-[#050505] -z-10" />
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -82,7 +85,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             <h2 className="text-sm md:text-xl font-medium text-gray-400 tracking-wide uppercase">
               Hello, I am
             </h2>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter text-white">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.9] tracking-tighter text-white">
               {profile.name}<span className="text-blue-500">.</span>
             </h1>
             
@@ -156,6 +159,11 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 1, ease: "easeOut" }}
             className="relative w-52 h-[260px] sm:w-64 sm:h-[320px] md:w-72 md:h-[360px] lg:w-80 lg:h-[420px]"
           >
+            {/* Interactive 3D Orbit Mesh behind card */}
+            <div className="absolute -inset-20 sm:-inset-24 md:-inset-28 lg:-inset-32 -z-20 opacity-75 pointer-events-auto">
+              <ThreeDCanvas />
+            </div>
+
             {/* Outer glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30 animate-pulse" />
 

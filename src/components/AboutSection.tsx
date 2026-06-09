@@ -2,6 +2,10 @@
 
 import { motion } from "framer-motion";
 import { BookOpen, Briefcase, Cpu, Database, Laptop, Sparkles, Users } from "lucide-react";
+import SpotlightCard from "./SpotlightCard";
+
+
+
 
 export default function AboutSection() {
   const focusAreas = [
@@ -84,45 +88,51 @@ export default function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
+                className="h-full"
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
-                </div>
-                <div>
-                  <p className="text-lg sm:text-2xl font-black text-white">30<span className="text-blue-400">+</span></p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Class 1–12 Taught</p>
-                </div>
+                <SpotlightCard className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3 h-full">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-lg sm:text-2xl font-black text-white">30<span className="text-blue-400">+</span></p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Class 1–12 Taught</p>
+                  </div>
+                </SpotlightCard>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
+                className="h-full"
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0">
-                  <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-                </div>
-                <div>
-                  <p className="text-lg sm:text-2xl font-black text-white">6<span className="text-yellow-400">mo</span></p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Chegg India SME</p>
-                </div>
+                <SpotlightCard className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3 h-full">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0">
+                    <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
+                  </div>
+                  <div>
+                    <p className="text-lg sm:text-2xl font-black text-white">6<span className="text-yellow-400">mo</span></p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">Chegg India SME</p>
+                  </div>
+                </SpotlightCard>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3"
+                className="h-full"
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <p className="text-lg sm:text-2xl font-black text-white">8.47<span className="text-emerald-400 text-xs sm:text-sm font-bold"> GPA</span></p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">CGPA</p>
-                </div>
+                <SpotlightCard className="glass-panel p-3 sm:p-4 rounded-2xl border border-white/5 flex items-center gap-2 sm:gap-3 h-full">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-lg sm:text-2xl font-black text-white">8.47<span className="text-emerald-400 text-xs sm:text-sm font-bold"> GPA</span></p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wide">CGPA</p>
+                  </div>
+                </SpotlightCard>
               </motion.div>
             </div>
           </motion.div>
@@ -140,13 +150,15 @@ export default function AboutSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="glass-panel p-6 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300"
+                    className="h-full"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center mb-4">
-                      <IconComponent className={`w-5 h-5 ${area.color}`} />
-                    </div>
-                    <h4 className="font-bold text-white text-lg mb-2">{area.title}</h4>
-                    <p className="text-sm text-gray-400 leading-relaxed font-sans">{area.description}</p>
+                    <SpotlightCard className="glass-panel p-6 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300 h-full flex flex-col">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center mb-4">
+                        <IconComponent className={`w-5 h-5 ${area.color}`} />
+                      </div>
+                      <h4 className="font-bold text-white text-lg mb-2">{area.title}</h4>
+                      <p className="text-sm text-gray-400 leading-relaxed font-sans flex-1">{area.description}</p>
+                    </SpotlightCard>
                   </motion.div>
                 );
               })}

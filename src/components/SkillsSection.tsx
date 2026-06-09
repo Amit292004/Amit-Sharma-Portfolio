@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Code2, Server, Brain, Wrench, Globe } from "lucide-react";
+import SpotlightCard from "./SpotlightCard";
 
 type Skill = {
   id: string;
@@ -99,41 +100,43 @@ export default function SkillsSection({ skills }: { skills: Skill[] }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: catIdx * 0.1 }}
-                className={`glass-panel rounded-2xl p-6 border bg-gradient-to-br ${colorClass}`}
+                className="h-full"
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
-                    <Icon className="w-5 h-5" />
+                <SpotlightCard className={`rounded-2xl p-6 border bg-gradient-to-br h-full ${colorClass}`}>
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-bold text-white text-lg">{category}</h3>
+                    <span className="ml-auto text-xs font-semibold opacity-60">{catSkills.length} skills</span>
                   </div>
-                  <h3 className="font-bold text-white text-lg">{category}</h3>
-                  <span className="ml-auto text-xs font-semibold opacity-60">{catSkills.length} skills</span>
-                </div>
 
-                <div className="space-y-4">
-                  {catSkills.map((skill, i) => (
-                    <motion.div
-                      key={skill.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: catIdx * 0.1 + i * 0.05 }}
-                    >
-                      <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-sm font-medium text-gray-200">{skill.name}</span>
-                        <span className="text-xs text-gray-500 font-mono">{skill.proficiency}%</span>
-                      </div>
-                      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.proficiency}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, delay: catIdx * 0.1 + i * 0.05 + 0.2, ease: "easeOut" }}
-                          className={`h-full rounded-full bg-gradient-to-r ${barGradient}`}
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                  <div className="space-y-4">
+                    {catSkills.map((skill, i) => (
+                      <motion.div
+                        key={skill.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: catIdx * 0.1 + i * 0.05 }}
+                      >
+                        <div className="flex justify-between items-center mb-1.5">
+                          <span className="text-sm font-medium text-gray-200">{skill.name}</span>
+                          <span className="text-xs text-gray-500 font-mono">{skill.proficiency}%</span>
+                        </div>
+                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.proficiency}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, delay: catIdx * 0.1 + i * 0.05 + 0.2, ease: "easeOut" }}
+                            className={`h-full rounded-full bg-gradient-to-r ${barGradient}`}
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </SpotlightCard>
               </motion.div>
             );
           })}
