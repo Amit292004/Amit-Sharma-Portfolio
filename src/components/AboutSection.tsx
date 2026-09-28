@@ -71,7 +71,7 @@ export default function AboutSection() {
               </div>
 
               <div className="p-4 rounded-2xl bg-zinc-950 border border-white/[0.08]">
-                <p className="text-2xl font-bold text-white font-display tracking-tight">8.47</p>
+                <p className="text-2xl font-bold text-white font-display tracking-tight">8.62</p>
                 <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">Degree CGPA</p>
               </div>
             </div>

@@ -52,7 +52,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-200 ${
         isScrolled
-          ? "bg-[#07080c]/85 backdrop-blur-xl border-b border-white/[0.08] py-3.5"
+          ? "bg-black/85 backdrop-blur-xl border-b border-white/[0.08] py-3.5"
           : "bg-transparent py-5"
       }`}
     >
@@ -60,13 +60,13 @@ export default function Navbar() {
         
         {/* Clean Logo */}
         <Link href="/" className="group flex items-center gap-2">
-          <span className="font-mono text-sm font-semibold tracking-tight text-white group-hover:text-sky-300 transition-colors">
-            amit.sharma<span className="text-sky-400 font-bold">_</span>
+          <span className="font-mono text-sm font-semibold tracking-tight text-white group-hover:text-zinc-300 transition-colors">
+            amit.sharma<span className="text-[#2997ff] font-bold">_</span>
           </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#0c101c]/90 p-1 rounded-full border border-white/[0.08] backdrop-blur-xl shadow-lg">
+        <nav className="hidden md:flex items-center gap-1 bg-zinc-950/80 p-1 rounded-full border border-white/[0.08] backdrop-blur-xl shadow-lg">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.substring(1);
             return (
@@ -74,12 +74,12 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 className="relative px-3.5 py-1.5 text-xs font-mono tracking-tight transition-colors z-10"
-                style={{ color: isActive ? "#ffffff" : "#94a3b8" }}
+                style={{ color: isActive ? "#ffffff" : "#a1a1aa" }}
               >
                 {isActive && (
                   <motion.span
                     layoutId="active-nav-pill"
-                    className="absolute inset-0 bg-sky-500/15 rounded-full -z-10 border border-sky-500/30"
+                    className="absolute inset-0 bg-white/[0.12] rounded-full -z-10 border border-white/[0.08]"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -93,10 +93,10 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="#contact"
-            className="interactive-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium text-sky-300 hover:text-white bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 transition-all shadow-sm"
+            className="interactive-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium text-zinc-200 hover:text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] transition-all shadow-sm"
           >
             <span>Let&apos;s talk</span>
-            <ArrowUpRight className="w-3 h-3 text-sky-400" />
+            <ArrowUpRight className="w-3 h-3 text-zinc-400" />
           </a>
         </div>
 
@@ -118,7 +118,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-[#050507]/95 backdrop-blur-2xl p-6 flex flex-col justify-between"
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl p-6 flex flex-col justify-between"
           >
             <div className="flex justify-between items-center pb-6 border-b border-white/[0.08]">
               <span className="font-mono text-sm font-semibold text-white">amit.sharma_</span>

@@ -91,7 +91,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">Techaura '25</p>
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">8.47</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">8.62</p>
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">B.Tech CGPA</p>
             </div>
             <div>
