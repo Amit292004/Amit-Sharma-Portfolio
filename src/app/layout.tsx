@@ -101,10 +101,18 @@ export default function RootLayout({
                 "Java Programming",
                 "Cyber Security"
               ],
-              "alumniOf": {
-                "@type": "EducationalOrganization",
-                "name": "Techaura"
-              },
+              "alumniOf": [
+                {
+                  "@type": "EducationalOrganization",
+                  "name": "Nagaland University"
+                }
+              ],
+              "worksFor": [
+                {
+                  "@type": "Organization",
+                  "name": "Technology Innovation Hub, IIT Guwahati"
+                }
+              ],
               "award": [
                 "1st Place in Death Race coding competition at Techaura 2025",
                 "2nd Position in Circutrix competition at Techaura 2025"

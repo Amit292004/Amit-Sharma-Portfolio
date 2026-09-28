@@ -62,7 +62,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl sm:text-2xl text-zinc-300 font-medium tracking-tight"
             >
-              Software Engineer & Computer Science Student
+              Software Engineer & AI/ML Developer
             </motion.p>
           </div>
 
@@ -73,10 +73,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed font-sans"
           >
-            Building full-stack web applications and exploring applied machine learning.
-            Winner of the <span className="text-white font-medium">Techaura 2025 Death Race</span> competition, 
-            former <span className="text-white font-medium">Subject Matter Expert at Chegg India</span>, and 
-            focused on writing clean, high-performance software.
+            Computer Science Engineering student at <span className="text-white font-medium">Nagaland University</span> and former AI/ML Intern at <span className="text-white font-medium">TIH, IIT Guwahati</span>. Building production-grade full-stack web platforms and applied machine learning systems, winner of the <span className="text-white font-medium">Techaura 2025 Death Race</span>, and former <span className="text-white font-medium">Subject Matter Expert at Chegg India</span>.
           </motion.p>
 
           {/* Clean Monochromatic Metrics Bar */}
@@ -87,16 +84,16 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             className="grid grid-cols-3 gap-6 pt-3 pb-4 border-y border-white/[0.08] max-w-lg"
           >
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">1st Place</p>
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">Techaura '25</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">IIT Guwahati</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">AI/ML Intern</p>
             </div>
             <div>
               <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">8.62</p>
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">B.Tech CGPA</p>
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">30+ Taught</p>
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">STEM Students</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">1st Place</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">Techaura '25</p>
             </div>
           </motion.div>
 
@@ -179,7 +176,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
                     {profile.name}
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#2997ff] inline" />
                   </p>
-                  <p className="text-[11px] text-zinc-400 font-mono">B.Tech CS Engineering</p>
+                  <p className="text-[11px] text-zinc-400 font-mono">B.Tech CS · Nagaland Univ</p>
                 </div>
 
                 <div className="text-right">

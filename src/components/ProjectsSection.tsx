@@ -18,6 +18,24 @@ type Project = {
 // High-quality showcase projects reflecting Amit's real engineering domains
 const DEFAULT_PROJECTS: Project[] = [
   {
+    id: "p0",
+    title: "Bounce Back Academy — Ed-Tech Platform",
+    description: "Full-stack learning management system built with JWT auth, Google OAuth, OTP verification, Groq LLM doubt solver with streaming responses, chapter-wise quizzes, discussion forum, and CMS.",
+    techStack: "Next.js, TypeScript, PostgreSQL, Prisma, Redis, Groq LLM, Cloudinary",
+    imageUrl: null,
+    liveLink: null,
+    githubLink: "https://github.com/Amit292004",
+  },
+  {
+    id: "p-ai",
+    title: "Multimodal AI Attendance & FaceID System",
+    description: "Automated classroom attendance platform developed at IIT-G TIH using group-photo facial detection and acoustic voice recognition with high-dimensional vector embeddings.",
+    techStack: "Python, Scikit-Learn, dlib, ResNet, Librosa, Streamlit, Supabase",
+    imageUrl: null,
+    liveLink: null,
+    githubLink: "https://github.com/Amit292004",
+  },
+  {
     id: "p1",
     title: "Portfolio Platform Architecture",
     description: "Next.js 16 full-stack web application featuring PostgreSQL, Prisma ORM, NextAuth administrative management, and dynamic REST endpoints.",
@@ -31,15 +49,6 @@ const DEFAULT_PROJECTS: Project[] = [
     title: "Techaura Death Race Autonomous Solution",
     description: "Algorithmic decision tree and pathfinding logic built in C++ that secured 1st place in the Techaura 2025 tech fest coding championship.",
     techStack: "C++, STL, Algorithms, Optimization, Graph Search",
-    imageUrl: null,
-    liveLink: null,
-    githubLink: "https://github.com/Amit292004",
-  },
-  {
-    id: "p3",
-    title: "AI Assisted STEM Learning Portal",
-    description: "Educational tooling prototype designed to assist students with step-by-step problem breakdown in Physics and Chemistry using LLM orchestrations.",
-    techStack: "Python, Generative AI, Next.js, FastAPI, REST APIs",
     imageUrl: null,
     liveLink: null,
     githubLink: "https://github.com/Amit292004",

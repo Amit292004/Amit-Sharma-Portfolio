@@ -28,6 +28,9 @@ const TECH_META: Record<string, { tag: string; description: string }> = {
   "C++": { tag: "Systems", description: "STL containers, pointers, high-performance problem solving" },
   "Java": { tag: "Language", description: "Object-oriented programming, data structures, JVM concepts" },
   "Git / GitHub": { tag: "Tooling", description: "Version control, branching workflows, PR reviews" },
+  "Docker": { tag: "DevOps", description: "Containerization, reproducible environments, service isolation" },
+  "MongoDB": { tag: "Database", description: "Document-oriented NoSQL storage, schema aggregation" },
+  "PyTorch / Scikit-learn": { tag: "AI/ML", description: "Deep learning models, classification pipelines, vector embeddings" },
   "Vercel / Supabase": { tag: "DevOps", description: "Edge deployment, continuous deployment, hosted databases" },
 };
 
@@ -43,21 +46,24 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
 };
 
 const FALLBACK_SKILLS: Skill[] = [
-  { id: "1", name: "React / Next.js", category: "Frontend", proficiency: 85 },
-  { id: "2", name: "TypeScript", category: "Frontend", proficiency: 80 },
+  { id: "1", name: "React / Next.js", category: "Frontend", proficiency: 88 },
+  { id: "2", name: "TypeScript", category: "Frontend", proficiency: 82 },
   { id: "3", name: "Tailwind CSS", category: "Frontend", proficiency: 90 },
   { id: "4", name: "HTML / CSS", category: "Frontend", proficiency: 95 },
-  { id: "5", name: "Node.js", category: "Backend", proficiency: 78 },
-  { id: "6", name: "PostgreSQL", category: "Backend", proficiency: 75 },
-  { id: "7", name: "Prisma ORM", category: "Backend", proficiency: 80 },
-  { id: "8", name: "REST APIs", category: "Backend", proficiency: 85 },
-  { id: "9", name: "Python", category: "AI/ML", proficiency: 80 },
-  { id: "10", name: "Machine Learning", category: "AI/ML", proficiency: 70 },
-  { id: "11", name: "Generative AI", category: "AI/ML", proficiency: 72 },
-  { id: "12", name: "C++", category: "Languages", proficiency: 82 },
-  { id: "13", name: "Java", category: "Languages", proficiency: 78 },
-  { id: "14", name: "Git / GitHub", category: "Tools", proficiency: 88 },
-  { id: "15", name: "Vercel / Supabase", category: "Tools", proficiency: 85 },
+  { id: "5", name: "Node.js", category: "Backend", proficiency: 80 },
+  { id: "6", name: "PostgreSQL", category: "Backend", proficiency: 82 },
+  { id: "7", name: "MongoDB", category: "Backend", proficiency: 76 },
+  { id: "8", name: "Prisma ORM", category: "Backend", proficiency: 84 },
+  { id: "9", name: "REST APIs", category: "Backend", proficiency: 85 },
+  { id: "10", name: "Python", category: "AI/ML", proficiency: 85 },
+  { id: "11", name: "PyTorch / Scikit-learn", category: "AI/ML", proficiency: 78 },
+  { id: "12", name: "Machine Learning", category: "AI/ML", proficiency: 75 },
+  { id: "13", name: "Generative AI", category: "AI/ML", proficiency: 75 },
+  { id: "14", name: "C++", category: "Languages", proficiency: 82 },
+  { id: "15", name: "Java", category: "Languages", proficiency: 80 },
+  { id: "16", name: "Git / GitHub", category: "Tools", proficiency: 88 },
+  { id: "17", name: "Docker", category: "Tools", proficiency: 75 },
+  { id: "18", name: "Vercel / Supabase", category: "Tools", proficiency: 85 },
 ];
 
 export default function SkillsSection({ skills }: { skills: Skill[] }) {

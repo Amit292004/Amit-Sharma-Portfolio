@@ -14,6 +14,14 @@ type Internship = {
 
 const DEFAULT_INTERNSHIPS: Internship[] = [
   {
+    id: "int-0",
+    role: "AI/ML Intern",
+    company: "Technology Innovation Hub, IIT Guwahati",
+    duration: "June 2026 – July 2026",
+    description: "Engineered an AI system automating classroom attendance via group-photo facial detection and acoustic voice recognition, with passwordless FaceID authentication, automated Excel reporting, and high-dimensional vector storage using Python, Scikit-Learn (SVC), dlib, ResNet, Librosa, Resemblyzer, Streamlit, and Supabase (PostgreSQL).",
+    certificateUrl: null,
+  },
+  {
     id: "int-1",
     role: "Subject Matter Expert (CS & STEM)",
     company: "Chegg India",

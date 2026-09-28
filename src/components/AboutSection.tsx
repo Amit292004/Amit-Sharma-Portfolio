@@ -48,31 +48,31 @@ export default function AboutSection() {
 
             <div className="text-zinc-400 space-y-4 text-base leading-relaxed font-sans">
               <p>
-                I am a Computer Science undergraduate focused on practical full-stack software development and intelligent web applications.
+                I am a Computer Science undergraduate at <span className="text-white font-medium">Nagaland University</span> (8.62 CGPA) and former AI/ML Intern at <span className="text-white font-medium">Technology Innovation Hub, IIT Guwahati</span>.
               </p>
               <p>
-                My projects center on building dependable web software: designing relational database models, writing type-safe TypeScript interfaces, and exploring machine learning workflows.
+                My work spans building robust full-stack platforms with Next.js, TypeScript, Prisma, and PostgreSQL alongside engineering applied machine learning pipelines using Python, PyTorch, and multimodal recognition systems.
               </p>
               <p>
-                Outside of coding, I've spent substantial time in technical education: tutoring over <span className="text-white font-semibold">30 students</span> in secondary STEM coursework, and serving <span className="text-white font-semibold">6 months as a Subject Matter Expert at Chegg India</span> diagnosing advanced academic problems.
+                Outside of core development, I've served <span className="text-white font-semibold">6 months as a Subject Matter Expert at Chegg India</span> diagnosing advanced academic problems, mentored over <span className="text-white font-semibold">30 students</span> in secondary STEM disciplines, and won 1st place in the <span className="text-white font-semibold">Techaura 2025 Death Race</span>.
               </p>
             </div>
 
             {/* Clean Monochromatic Metrics Row */}
             <div className="grid grid-cols-3 gap-3 pt-4">
               <div className="p-4 rounded-2xl bg-zinc-950 border border-white/[0.08]">
-                <p className="text-2xl font-bold text-white font-display tracking-tight">30<span className="text-[#2997ff]">+</span></p>
-                <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">Students Mentored</p>
+                <p className="text-2xl font-bold text-white font-display tracking-tight">8.62</p>
+                <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">B.Tech CGPA</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-zinc-950 border border-white/[0.08]">
+                <p className="text-2xl font-bold text-white font-display tracking-tight">IIT<span className="text-[#2997ff]">-G</span></p>
+                <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">AI/ML Intern</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-zinc-950 border border-white/[0.08]">
                 <p className="text-2xl font-bold text-white font-display tracking-tight">6<span className="text-[#2997ff]">mo</span></p>
                 <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">Chegg SME</p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-zinc-950 border border-white/[0.08]">
-                <p className="text-2xl font-bold text-white font-display tracking-tight">8.62</p>
-                <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-wider font-mono">Degree CGPA</p>
               </div>
             </div>
           </div>
