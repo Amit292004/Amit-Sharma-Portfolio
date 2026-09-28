@@ -10,7 +10,11 @@ import CertificationsSection from "@/components/CertificationsSection";
 import InternshipsSection from "@/components/InternshipsSection";
 
 import ContactSection from "@/components/ContactSection";
+import FaqSection from "@/components/FaqSection";
 import BackToTop from "@/components/BackToTop";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Home() {
   let achievements: any[] = [];
@@ -98,6 +102,9 @@ export default async function Home() {
 
       <SectionBorder />
       <CertificationsSection certifications={certifications} />
+
+      <SectionBorder />
+      <FaqSection />
 
       <SectionBorder />
       <ContactSection />

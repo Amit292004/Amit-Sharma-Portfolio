@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
@@ -106,6 +107,9 @@ export async function POST(req: Request) {
     }
 
     await saveLocalProfile(savedProfile);
+
+    revalidatePath("/");
+    revalidatePath("/admin");
 
     return NextResponse.json(savedProfile);
   } catch (error: any) {

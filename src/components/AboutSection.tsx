@@ -54,7 +54,7 @@ export default function AboutSection() {
                 My work spans building robust full-stack platforms with Next.js, TypeScript, Prisma, and PostgreSQL alongside engineering applied machine learning pipelines using Python, PyTorch, and multimodal recognition systems.
               </p>
               <p>
-                Outside of core development, I've served <span className="text-white font-semibold">6 months as a Subject Matter Expert at Chegg India</span> diagnosing advanced academic problems, mentored over <span className="text-white font-semibold">30 students</span> in secondary STEM disciplines, and won 1st place in the <span className="text-white font-semibold">Techaura 2025 Death Race</span>.
+                Outside of core development, I am the <span className="text-white font-semibold">Founder & Developer of Bounce Back Academy</span> (an EdTech platform), served <span className="text-white font-semibold">6 months as a Subject Matter Expert at Chegg India</span> diagnosing advanced academic problems, and mentored over <span className="text-white font-semibold">30 students</span> in secondary STEM disciplines.
               </p>
             </div>
 

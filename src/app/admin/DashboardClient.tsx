@@ -555,14 +555,14 @@ export default function DashboardClient({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Role/Tagline</label>
+                <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Role / Tagline (under photo badge)</label>
                 <input 
                   required 
                   type="text" 
                   value={profileForm.role}
                   onChange={e => setProfileForm({ ...profileForm, role: e.target.value })}
                   className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm" 
-                  placeholder="CS Engineering" 
+                  placeholder="e.g. B.Tech CS or Full Stack Developer" 
                 />
               </div>
 

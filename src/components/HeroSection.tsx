@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Mail, ExternalLink, MapPin, CheckCircle2 } from "lucide-react";
 import Particles from "./Particles";
@@ -13,6 +14,31 @@ type ProfileProp = {
 };
 
 export default function HeroSection({ profile }: { profile: ProfileProp }) {
+  const candidateSources = [
+    profile.avatarUrl,
+    "/avatar.png",
+    "/profile.png",
+    "/profile.jpg",
+  ].filter(Boolean) as string[];
+
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const [imgFailed, setImgFailed] = useState(false);
+
+  useEffect(() => {
+    setSourceIndex(0);
+    setImgFailed(false);
+  }, [profile.avatarUrl]);
+
+  const currentSrc = candidateSources[sourceIndex] || "/avatar.png";
+
+  const handleImageError = () => {
+    if (sourceIndex < candidateSources.length - 1) {
+      setSourceIndex((prev) => prev + 1);
+    } else {
+      setImgFailed(true);
+    }
+  };
+
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 px-4 sm:px-6 lg:px-16 bg-black">
       {/* Background Particles & Subtle Blue Ambient Light */}
@@ -73,7 +99,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-base sm:text-lg text-zinc-400 max-w-xl leading-relaxed font-sans"
           >
-            Computer Science Engineering student at <span className="text-white font-medium">Nagaland University</span> and former AI/ML Intern at <span className="text-white font-medium">TIH, IIT Guwahati</span>. Building production-grade full-stack web platforms and applied machine learning systems, winner of the <span className="text-white font-medium">Techaura 2025 Death Race</span>, and former <span className="text-white font-medium">Subject Matter Expert at Chegg India</span>.
+            Computer Science Engineering student at <span className="text-white font-medium">Nagaland University</span> and former AI/ML Intern at <span className="text-white font-medium">TIH, IIT Guwahati</span>. Founder and developer of <span className="text-white font-medium">Bounce Back Academy</span> (an EdTech platform), building production-grade full-stack web platforms and applied machine learning systems, and former <span className="text-white font-medium">Subject Matter Expert at Chegg India</span>.
           </motion.p>
 
           {/* Clean Monochromatic Metrics Bar */}
@@ -81,19 +107,19 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="grid grid-cols-3 gap-6 pt-3 pb-4 border-y border-white/[0.08] max-w-lg"
+            className="grid grid-cols-3 gap-4 sm:gap-6 pt-3 pb-4 border-y border-white/[0.08] max-w-xl"
           >
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">IIT Guwahati</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight whitespace-nowrap">IIT Guwahati</p>
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">AI/ML Intern</p>
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">8.62</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight whitespace-nowrap">8.62</p>
               <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">B.Tech CGPA</p>
             </div>
             <div>
-              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">1st Place</p>
-              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5">Techaura '25</p>
+              <p className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight whitespace-nowrap">Founder & Dev</p>
+              <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 truncate" title="Bounce Back Academy (EdTech Platform)">Bounce Back Academy</p>
             </div>
           </motion.div>
 
@@ -160,13 +186,23 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             {/* Profile Card */}
             <div className="relative w-full h-full bg-zinc-950/90 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/[0.12] flex flex-col group transition-all duration-300 hover:border-[#2997ff]/40">
               {/* Photo */}
-              <div className="flex-1 overflow-hidden relative bg-zinc-900">
-                <img
-                  src={profile.avatarUrl || "/profile.jpg"}
-                  alt={profile.name}
-                  className="w-full h-full object-cover object-top filter grayscale-[15%] group-hover:grayscale-0 transition-all duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-90" />
+              <div className="flex-1 overflow-hidden relative bg-zinc-900 flex items-center justify-center">
+                {!imgFailed ? (
+                  <img
+                    src={currentSrc}
+                    alt={`${profile.name} (Amit) - Software Engineer & AI/ML Developer - Nagaland University & IIT Guwahati`}
+                    onError={handleImageError}
+                    className="w-full h-full object-cover object-top filter grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-zinc-800 to-zinc-950 text-zinc-400 p-6 text-center select-none">
+                    <div className="w-20 h-20 rounded-full bg-white/[0.06] border border-white/[0.1] flex items-center justify-center mb-3">
+                      <span className="text-2xl font-bold font-display text-white">AS</span>
+                    </div>
+                    <p className="text-xs font-mono text-zinc-400">{profile.name}</p>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-90 pointer-events-none" />
               </div>
 
               {/* Bottom metadata strip */}
@@ -176,13 +212,17 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
                     {profile.name}
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#2997ff] inline" />
                   </p>
-                  <p className="text-[11px] text-zinc-400 font-mono">B.Tech CS · Nagaland Univ</p>
+                  <p className="text-[11px] text-zinc-400 font-mono">{profile.role || "B.Tech CS"}</p>
                 </div>
 
                 <div className="text-right">
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    Open
+                  <span className={`inline-flex items-center gap-1.5 text-[11px] font-mono ${
+                    profile.available !== false
+                      ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                      : "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                  } px-2 py-0.5 rounded-full border`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${profile.available !== false ? "bg-emerald-400" : "bg-amber-400"}`} />
+                    {profile.available !== false ? "Open" : "Busy"}
                   </span>
                 </div>
               </div>
