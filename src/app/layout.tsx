@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://amitsharma-portfolio-v2.vercel.app"),
+  metadataBase: new URL("https://amitsharmadev.vercel.app"),
   title: {
     default: "Amit Sharma | Software Engineer & AI/ML Developer",
     template: "%s | Amit Sharma",
@@ -54,17 +54,17 @@ export const metadata: Metadata = {
     "Amit Sharma projects",
     "Amit Sharma resume"
   ],
-  authors: [{ name: "Amit Sharma", url: "https://amitsharma-portfolio-v2.vercel.app" }],
+  authors: [{ name: "Amit Sharma", url: "https://amitsharmadev.vercel.app" }],
   creator: "Amit Sharma",
   publisher: "Amit Sharma",
   alternates: {
-    canonical: "https://amitsharma-portfolio-v2.vercel.app",
+    canonical: "https://amitsharmadev.vercel.app",
   },
   openGraph: {
     title: "Amit Sharma | Software Engineer & AI/ML Developer",
     description:
       "Personal portfolio and engineering work of Amit Sharma — CS undergraduate, AI/ML Intern at IIT Guwahati, and Full Stack Developer.",
-    url: "https://amitsharma-portfolio-v2.vercel.app",
+    url: "https://amitsharmadev.vercel.app",
     siteName: "Amit Sharma Portfolio",
     locale: "en_IN",
     type: "profile",
@@ -111,7 +111,7 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://amitsharma-portfolio-v2.vercel.app/#person",
+        "@id": "https://amitsharmadev.vercel.app/#person",
         "name": "Amit Sharma",
         "givenName": "Amit",
         "familyName": "Sharma",
@@ -126,11 +126,11 @@ export default function RootLayout({
           "Amit Sharma Bounce Back Academy",
           "Amit292004"
         ],
-        "url": "https://amitsharma-portfolio-v2.vercel.app",
+        "url": "https://amitsharmadev.vercel.app",
         "image": {
           "@type": "ImageObject",
-          "@id": "https://amitsharma-portfolio-v2.vercel.app/#image",
-          "url": "https://amitsharma-portfolio-v2.vercel.app/profile.png",
+          "@id": "https://amitsharmadev.vercel.app/#image",
+          "url": "https://amitsharmadev.vercel.app/profile.png",
           "caption": "Amit Sharma - Software Engineer & AI/ML Developer"
         },
         "jobTitle": "Software Engineer & AI/ML Developer",
@@ -163,14 +163,14 @@ export default function RootLayout({
           {
             "@type": "Organization",
             "name": "Bounce Back Academy",
-            "url": "https://amitsharma-portfolio-v2.vercel.app"
+            "url": "https://amitsharmadev.vercel.app"
           }
         ],
         "sameAs": [
           "https://github.com/Amit292004",
           "https://www.linkedin.com/in/amit-sharma-142a26359/",
           "https://www.instagram.com/am____it_292004/",
-          "https://amitsharma-portfolio-v2.vercel.app"
+          "https://amitsharmadev.vercel.app"
         ],
         "knowsAbout": [
           "Full Stack Web Development",
@@ -192,8 +192,8 @@ export default function RootLayout({
       },
       {
         "@type": "WebSite",
-        "@id": "https://amitsharma-portfolio-v2.vercel.app/#website",
-        "url": "https://amitsharma-portfolio-v2.vercel.app",
+        "@id": "https://amitsharmadev.vercel.app/#website",
+        "url": "https://amitsharmadev.vercel.app",
         "name": "Amit Sharma | Software Engineer & AI/ML Developer",
         "alternateName": [
           "Amit",
@@ -203,22 +203,22 @@ export default function RootLayout({
           "Amit AI & Web Developer"
         ],
         "publisher": {
-          "@id": "https://amitsharma-portfolio-v2.vercel.app/#person"
+          "@id": "https://amitsharmadev.vercel.app/#person"
         },
         "inLanguage": "en-IN"
       },
       {
         "@type": "ProfilePage",
-        "@id": "https://amitsharma-portfolio-v2.vercel.app/#profilepage",
-        "url": "https://amitsharma-portfolio-v2.vercel.app",
+        "@id": "https://amitsharmadev.vercel.app/#profilepage",
+        "url": "https://amitsharmadev.vercel.app",
         "name": "Amit Sharma Profile & Portfolio",
         "mainEntity": {
-          "@id": "https://amitsharma-portfolio-v2.vercel.app/#person"
+          "@id": "https://amitsharmadev.vercel.app/#person"
         }
       },
       {
         "@type": "FAQPage",
-        "@id": "https://amitsharma-portfolio-v2.vercel.app/#faq",
+        "@id": "https://amitsharmadev.vercel.app/#faq",
         "mainEntity": [
           {
             "@type": "Question",

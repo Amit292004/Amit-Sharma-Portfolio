@@ -41,7 +41,7 @@ const DEFAULT_PROJECTS: Project[] = [
     description: "Next.js 16 full-stack web application featuring PostgreSQL, Prisma ORM, NextAuth administrative management, and dynamic REST endpoints.",
     techStack: "Next.js, React 19, TypeScript, PostgreSQL, Prisma, Tailwind CSS",
     imageUrl: null,
-    liveLink: "https://amitsharma-portfolio-v2.vercel.app",
+    liveLink: "https://amitsharmadev.vercel.app",
     githubLink: "https://github.com/Amit292004/PersonalPortifoliaPage",
   },
   {
