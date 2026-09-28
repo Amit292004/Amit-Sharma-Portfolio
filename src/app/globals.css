@@ -1,63 +1,98 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-primary: #3b82f6;
-  --color-accent: #8b5cf6;
+  --color-background: #000000;
+  --color-foreground: #f5f5f7;
+  --color-primary: #ffffff;
+  --color-accent: #2997ff;
   
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 @layer base {
   :root {
-    --background: #050505;
-    --foreground: #ffffff;
+    --background: #000000;
+    --foreground: #f5f5f7;
   }
   
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans), sans-serif;
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), sans-serif;
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono), monospace;
   }
 }
 
+/* ─── Sleek Monochromatic Glass Surfaces ─── */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(18, 18, 20, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
+.glass-panel-elevated {
+  background: rgba(22, 22, 26, 0.8);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+}
+
+/* ─── Clean Light-Fall Gradients (White to Zinc) ─── */
 .text-gradient {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Custom Scrollbar */
+.text-gradient-accent {
+  background: linear-gradient(180deg, #ffffff 20%, #2997ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Tactile Feedback ─── */
+.interactive-tap {
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 140ms ease, border-color 140ms ease;
+}
+.interactive-tap:active {
+  transform: scale(0.97);
+}
+
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #27272a;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #3f3f46;
 }

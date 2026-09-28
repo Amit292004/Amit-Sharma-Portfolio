@@ -1,7 +1,7 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { GraduationCap, Trophy } from "lucide-react";
-import SpotlightCard from "./SpotlightCard";
 
 type Achievement = {
   id: string;
@@ -24,86 +24,97 @@ interface TimelineProps {
 
 export default function TimelineSection({ achievements, courses }: TimelineProps) {
   return (
-    <section id="achievements" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-20 relative">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Milestones & <span className="text-gradient">Education</span></h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">A journey of continuous learning and striving for excellence.</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Achievements Timeline */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <Trophy className="w-8 h-8 text-blue-500" />
-              <h3 className="text-2xl font-bold">Top Achievements</h3>
-            </div>
-            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-800 before:to-transparent">
-              {achievements.length > 0 ? achievements.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
-                >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-[#050505] text-blue-500 shadow shrink-0 z-10 glass-panel">
-                    <Trophy className="w-4 h-4" />
-                  </div>
-                  <SpotlightCard className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl group-hover:border-blue-500/30 transition-colors bg-[#050505]">
-                    <div className="flex items-center justify-between space-x-2 mb-1">
-                      <div className="font-bold text-white">{item.title}</div>
-                      <time className="font-mono text-xs text-blue-400">{item.date}</time>
-                    </div>
-                    <div className="text-sm text-gray-400">{item.description}</div>
-                  </SpotlightCard>
-                </motion.div>
-              )) : (
-                <p className="text-gray-500 ml-12">No achievements added yet.</p>
-              )}
-            </div>
+    <section id="achievements" className="py-24 px-4 sm:px-6 lg:px-16 bg-[#07080c]">
+      <div className="max-w-6xl mx-auto space-y-16">
+        
+        {/* Section Heading */}
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-mono text-sky-400">
+            <span>04 // TRACK RECORD</span>
           </div>
-
-          {/* Courses Timeline */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <GraduationCap className="w-8 h-8 text-purple-500" />
-              <h3 className="text-2xl font-bold">Certifications & Courses</h3>
-            </div>
-            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-800 before:to-transparent">
-              {courses.length > 0 ? courses.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
-                >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-[#050505] text-purple-500 shadow shrink-0 z-10 glass-panel">
-                    <GraduationCap className="w-4 h-4" />
-                  </div>
-                  <SpotlightCard className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl group-hover:border-purple-500/30 transition-colors bg-[#050505]">
-                    <div className="flex items-center justify-between space-x-2 mb-1">
-                      <div className="font-bold text-white">{item.title}</div>
-                      <time className="font-mono text-xs text-purple-400">{item.dateCompleted}</time>
-                    </div>
-                    <div className="text-sm text-gray-400">{item.institution}</div>
-                  </SpotlightCard>
-                </motion.div>
-              )) : (
-                <p className="text-gray-500 ml-12">No courses added yet.</p>
-              )}
-            </div>
-          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-display">
+            Honors, Competitions & Coursework
+          </h2>
+          <p className="text-slate-400 text-sm sm:text-base max-w-xl">
+            Verified academic milestones, competitive programming awards, and specialized technical training.
+          </p>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          
+          {/* Achievements Column */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-3 border-b border-white/[0.08]">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <Trophy className="w-4 h-4" />
+              </div>
+              <h3 className="text-lg font-bold text-white tracking-tight font-display">Key Honors & Competitions</h3>
+            </div>
+
+            <div className="space-y-4">
+              {achievements.length > 0 ? (
+                achievements.map((item, idx) => (
+                  <motion.div
+                    key={item.id || idx}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: idx * 0.08 }}
+                    className="p-5 rounded-2xl bg-[#0c101d]/75 border border-white/[0.08] hover:border-amber-500/30 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+                  >
+                    <div className="flex items-baseline justify-between gap-3 mb-2">
+                      <h4 className="font-semibold text-white text-base tracking-tight font-display">{item.title}</h4>
+                      <span className="text-xs font-mono text-amber-300 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">
+                        {item.date}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-300 leading-relaxed font-sans">{item.description}</p>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-slate-500 text-sm font-mono">No achievements listed yet.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Courses & Training Column */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-3 border-b border-white/[0.08]">
+              <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <GraduationCap className="w-4 h-4" />
+              </div>
+              <h3 className="text-lg font-bold text-white tracking-tight font-display">Focused Technical Coursework</h3>
+            </div>
+
+            <div className="space-y-4">
+              {courses.length > 0 ? (
+                courses.map((item, idx) => (
+                  <motion.div
+                    key={item.id || idx}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: idx * 0.08 }}
+                    className="p-5 rounded-2xl bg-[#0c101d]/75 border border-white/[0.08] hover:border-sky-500/30 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+                  >
+                    <div className="flex items-baseline justify-between gap-3 mb-1.5">
+                      <h4 className="font-semibold text-white text-base tracking-tight font-display">{item.title}</h4>
+                      <span className="text-xs font-mono text-sky-300 px-2 py-0.5 rounded bg-sky-500/10 border border-sky-500/20">{item.dateCompleted}</span>
+                    </div>
+                    <p className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
+                      <span>Institution:</span>
+                      <span className="text-slate-300">{item.institution}</span>
+                    </p>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-slate-500 text-sm font-mono">No courses listed yet.</p>
+              )}
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

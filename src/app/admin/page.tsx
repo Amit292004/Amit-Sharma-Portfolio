@@ -24,6 +24,16 @@ export default async function AdminDashboard() {
   }
 
   if (!profile) {
+    try {
+      const fs = await import("fs/promises");
+      const path = await import("path");
+      const localFile = path.join(process.cwd(), "public", "profile.json");
+      const content = await fs.readFile(localFile, "utf-8");
+      profile = JSON.parse(content);
+    } catch {}
+  }
+
+  if (!profile) {
     profile = {
       id: "default",
       name: "Amit Sharma",

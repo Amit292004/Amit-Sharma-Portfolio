@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, ExternalLink, Calendar, Building2 } from "lucide-react";
-import SpotlightCard from "./SpotlightCard";
+import { ExternalLink, Calendar, Building2 } from "lucide-react";
 
 type Internship = {
   id: string;
@@ -13,81 +12,94 @@ type Internship = {
   certificateUrl?: string | null;
 };
 
+const DEFAULT_INTERNSHIPS: Internship[] = [
+  {
+    id: "int-1",
+    role: "Subject Matter Expert (CS & STEM)",
+    company: "Chegg India",
+    duration: "6 Months",
+    description: "Evaluated and resolved advanced Computer Science and Mathematics academic queries with detailed, step-by-step technical problem solving and high student satisfaction metrics.",
+    certificateUrl: null,
+  },
+  {
+    id: "int-2",
+    role: "Student Ambassador",
+    company: "Internshala",
+    duration: "3 Months",
+    description: "Led student outreach initiatives, organized career readiness and tech education drives, and guided peers toward practical internship pathways.",
+    certificateUrl: null,
+  }
+];
+
 export default function InternshipsSection({ internships }: { internships: Internship[] }) {
-  if (!internships || internships.length === 0) return null;
+  const displayItems = internships && internships.length > 0 ? internships : DEFAULT_INTERNSHIPS;
 
   return (
-    <section id="internships" className="py-20 px-4 sm:px-6 lg:px-20 max-w-5xl mx-auto w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-16"
-      >
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-semibold text-gray-300 mb-4">
-          <Briefcase className="w-3.5 h-3.5" />
-          <span>Work Experience</span>
+    <section id="internships" className="py-24 px-4 sm:px-6 lg:px-16 bg-[#07080c]">
+      <div className="max-w-6xl mx-auto space-y-12">
+        
+        {/* Header */}
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-mono text-sky-400">
+            <span>05 // WORK EXPERIENCE</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-display">
+            Professional Experience & Roles
+          </h2>
+          <p className="text-slate-400 text-sm sm:text-base max-w-xl">
+            Practical roles in technical mentorship, academic analysis, and campus leadership.
+          </p>
         </div>
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-          My <span className="text-gradient">Internships</span>
-        </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto">
-          Professional experiences where I applied my skills, built real-world solutions, and learned from industry experts.
-        </p>
-      </motion.div>
 
-      <div className="relative border-l border-white/10 ml-4 md:ml-8 space-y-12">
-        {internships.map((internship, i) => (
-          <motion.div
-            key={internship.id}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="relative pl-8 md:pl-12 group"
-          >
-            {/* Timeline dot */}
-            <div className="absolute -left-[6px] md:-left-[7px] top-1.5 w-3 h-3 md:w-3.5 md:h-3.5 bg-blue-500 rounded-full ring-4 ring-[#050505] group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-            
-            <SpotlightCard className="glass-panel p-6 md:p-8 rounded-2xl border border-white/5 hover:border-white/10 transition-all bg-white/[0.02] group-hover:bg-white/[0.03]">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
+        {/* Experience List */}
+        <div className="space-y-4">
+          {displayItems.map((item, idx) => (
+            <motion.div
+              key={item.id || idx}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: idx * 0.1 }}
+              className="group p-6 sm:p-7 rounded-2xl bg-[#0c101d]/75 border border-white/[0.08] hover:border-sky-500/30 hover:bg-[#101524] transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
-                    {internship.role}
+                  <h3 className="text-xl font-bold text-white tracking-tight font-display group-hover:text-sky-300 transition-colors">
+                    {item.role}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-gray-400">
-                    <span className="flex items-center gap-1.5">
-                      <Building2 className="w-4 h-4 text-purple-400" />
-                      {internship.company}
+                  <div className="flex items-center gap-3 text-sm font-mono mt-1">
+                    <span className="flex items-center gap-1.5 text-sky-400">
+                      <Building2 className="w-3.5 h-3.5" />
+                      {item.company}
                     </span>
-                    <span className="hidden md:inline text-gray-600">•</span>
-                    <span className="flex items-center gap-1.5 text-blue-300">
-                      <Calendar className="w-4 h-4" />
-                      {internship.duration}
+                    <span className="text-slate-600">·</span>
+                    <span className="flex items-center gap-1.5 text-slate-400">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {item.duration}
                     </span>
                   </div>
                 </div>
-                
-                {internship.certificateUrl && (
+
+                {item.certificateUrl && (
                   <a
-                    href={internship.certificateUrl}
+                    href={item.certificateUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all shadow-lg hover:shadow-white/5 whitespace-nowrap"
+                    className="interactive-tap inline-flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-white bg-[#0e1424] hover:bg-[#151f36] border border-white/[0.1] px-3.5 py-1.5 rounded-xl transition-colors self-start sm:self-auto"
                   >
-                    View Certificate
-                    <ExternalLink className="w-4 h-4" />
+                    <span>Verification</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-sky-400" />
                   </a>
                 )}
               </div>
-              
-              <div className="text-gray-400 leading-relaxed text-sm md:text-base whitespace-pre-line">
-                {internship.description}
-              </div>
-            </SpotlightCard>
-          </motion.div>
-        ))}
+
+              <p className="text-sm text-slate-300 leading-relaxed font-sans max-w-4xl">
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
       </div>
     </section>
   );

@@ -293,13 +293,15 @@ export default function DashboardClient({
         setProfileForm(prev => ({ ...prev, avatarUrl: data.url }));
         alert("Image uploaded successfully! Click 'Save Profile' to apply changes.");
       } else {
-        alert("Upload failed");
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Upload failed");
       }
     } catch (err) {
       console.error(err);
       alert("Error uploading image");
     } finally {
       setUploadingImage(false);
+      e.target.value = "";
     }
   };
 

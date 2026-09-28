@@ -1,17 +1,40 @@
 "use client";
-import { motion } from "framer-motion";
-import { Code2, Server, Brain, Wrench, Globe } from "lucide-react";
-import SpotlightCard from "./SpotlightCard";
+
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Code2, Server, Brain, Wrench, Globe, Terminal, Layers, Search } from "lucide-react";
 
 type Skill = {
   id: string;
   name: string;
   category: string;
-  proficiency: number;
+  proficiency?: number;
   iconName?: string | null;
 };
 
+// Rich technical metadata with unified, clean badge styling
+const TECH_META: Record<string, { tag: string; description: string }> = {
+  "React / Next.js": { tag: "Full-Stack", description: "App Router, Server Components, SSR & Client hydration" },
+  "TypeScript": { tag: "Language", description: "Strict typing, generics, interfaces & compile-time safety" },
+  "Tailwind CSS": { tag: "Styling", description: "Utility-first design systems, responsive dark themes" },
+  "HTML / CSS": { tag: "Foundation", description: "Semantic markup, CSS Grid/Flexbox, modern web standards" },
+  "Node.js": { tag: "Runtime", description: "REST APIs, asynchronous event loop, npm ecosystem" },
+  "PostgreSQL": { tag: "Database", description: "Relational modeling, indexing, ACID transactions" },
+  "Prisma ORM": { tag: "Data Access", description: "Type-safe schemas, automated migrations, relational queries" },
+  "REST APIs": { tag: "Architecture", description: "HTTP endpoints, JSON contracts, authentication headers" },
+  "Python": { tag: "Language", description: "Data manipulation with NumPy/Pandas, automation scripts" },
+  "Machine Learning": { tag: "AI/ML", description: "Supervised models, scikit-learn pipelines, evaluation" },
+  "Generative AI": { tag: "Applied AI", description: "LLM integration, prompt engineering, API orchestration" },
+  "C++": { tag: "Systems", description: "STL containers, pointers, high-performance problem solving" },
+  "Java": { tag: "Language", description: "Object-oriented programming, data structures, JVM concepts" },
+  "Git / GitHub": { tag: "Tooling", description: "Version control, branching workflows, PR reviews" },
+  "Vercel / Supabase": { tag: "DevOps", description: "Edge deployment, continuous deployment, hosted databases" },
+};
+
+const CATEGORIES = ["All", "Frontend", "Backend", "AI/ML", "Languages", "Tools"] as const;
+
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  All: Layers,
   Frontend: Code2,
   Backend: Server,
   "AI/ML": Brain,
@@ -19,23 +42,6 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   Languages: Globe,
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Frontend: "from-blue-500/20 to-blue-600/5 border-blue-500/20 text-blue-400",
-  Backend: "from-emerald-500/20 to-emerald-600/5 border-emerald-500/20 text-emerald-400",
-  "AI/ML": "from-purple-500/20 to-purple-600/5 border-purple-500/20 text-purple-400",
-  Tools: "from-orange-500/20 to-orange-600/5 border-orange-500/20 text-orange-400",
-  Languages: "from-yellow-500/20 to-yellow-600/5 border-yellow-500/20 text-yellow-400",
-};
-
-const BAR_COLORS: Record<string, string> = {
-  Frontend: "from-blue-500 to-blue-400",
-  Backend: "from-emerald-500 to-emerald-400",
-  "AI/ML": "from-purple-500 to-purple-400",
-  Tools: "from-orange-500 to-orange-400",
-  Languages: "from-yellow-500 to-yellow-400",
-};
-
-// Static fallback skills
 const FALLBACK_SKILLS: Skill[] = [
   { id: "1", name: "React / Next.js", category: "Frontend", proficiency: 85 },
   { id: "2", name: "TypeScript", category: "Frontend", proficiency: 80 },
@@ -52,95 +58,129 @@ const FALLBACK_SKILLS: Skill[] = [
   { id: "13", name: "Java", category: "Languages", proficiency: 78 },
   { id: "14", name: "Git / GitHub", category: "Tools", proficiency: 88 },
   { id: "15", name: "Vercel / Supabase", category: "Tools", proficiency: 85 },
-
 ];
 
 export default function SkillsSection({ skills }: { skills: Skill[] }) {
-  const displaySkills = skills.length > 0 ? skills : FALLBACK_SKILLS;
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Group by category
-  const grouped = displaySkills.reduce<Record<string, Skill[]>>((acc, skill) => {
-    if (!acc[skill.category]) acc[skill.category] = [];
-    acc[skill.category].push(skill);
-    return acc;
-  }, {});
+  const displaySkills = skills && skills.length > 0 ? skills : FALLBACK_SKILLS;
+
+  const filteredSkills = useMemo(() => {
+    return displaySkills.filter((s) => {
+      const matchesCategory = activeCategory === "All" || s.category.toLowerCase() === activeCategory.toLowerCase();
+      const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            s.category.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [displaySkills, activeCategory, searchQuery]);
 
   return (
-    <section id="skills" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-20">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-xs font-semibold text-blue-400 mb-4">
-            <Code2 className="w-3.5 h-3.5" />
-            <span>What I work with</span>
+    <section id="skills" className="py-24 px-4 sm:px-6 lg:px-16 bg-black">
+      <div className="max-w-6xl mx-auto space-y-12">
+        
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-zinc-400">
+              <span>02 // CAPABILITIES</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-display">
+              Technical Stack & Engineering Tools
+            </h2>
+            <p className="text-zinc-400 text-sm sm:text-base max-w-xl">
+              Languages, frameworks, and infrastructure tools I use regularly in production and algorithmic problem solving.
+            </p>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Skills & <span className="text-gradient">Expertise</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Technologies and tools I've worked with across development, AI/ML, and security.
-          </p>
-        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {Object.entries(grouped).map(([category, catSkills], catIdx) => {
-            const Icon = CATEGORY_ICONS[category] || Code2;
-            const colorClass = CATEGORY_COLORS[category] || CATEGORY_COLORS["Tools"];
-            const barGradient = BAR_COLORS[category] || BAR_COLORS["Tools"];
+          {/* Search Box */}
+          <div className="relative w-full md:w-64">
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search stack..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 bg-zinc-950 border border-white/[0.08] rounded-xl text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white/25 transition-colors"
+            />
+          </div>
+        </div>
 
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-2">
+          {CATEGORIES.map((cat) => {
+            const Icon = CATEGORY_ICONS[cat] || Terminal;
+            const isActive = activeCategory === cat;
             return (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: catIdx * 0.1 }}
-                className="h-full"
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`interactive-tap inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all duration-150 cursor-pointer ${
+                  isActive
+                    ? "bg-white text-black font-semibold shadow-sm"
+                    : "bg-zinc-950 text-zinc-400 hover:text-white hover:bg-zinc-900 border border-white/[0.08]"
+                }`}
               >
-                <SpotlightCard className={`rounded-2xl p-6 border bg-gradient-to-br h-full ${colorClass}`}>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="font-bold text-white text-lg">{category}</h3>
-                    <span className="ml-auto text-xs font-semibold opacity-60">{catSkills.length} skills</span>
-                  </div>
-
-                  <div className="space-y-4">
-                    {catSkills.map((skill, i) => (
-                      <motion.div
-                        key={skill.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: catIdx * 0.1 + i * 0.05 }}
-                      >
-                        <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-sm font-medium text-gray-200">{skill.name}</span>
-                          <span className="text-xs text-gray-500 font-mono">{skill.proficiency}%</span>
-                        </div>
-                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.proficiency}%` }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, delay: catIdx * 0.1 + i * 0.05 + 0.2, ease: "easeOut" }}
-                            className={`h-full rounded-full bg-gradient-to-r ${barGradient}`}
-                          />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </SpotlightCard>
-              </motion.div>
+                <Icon className="w-3.5 h-3.5" />
+                <span>{cat}</span>
+              </button>
             );
           })}
         </div>
+
+        {/* Skills Grid */}
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <AnimatePresence mode="popLayout">
+            {filteredSkills.map((skill) => {
+              const meta = TECH_META[skill.name] || {
+                tag: skill.category,
+                description: `Applied in software engineering workflows with ${skill.name}.`,
+              };
+
+              return (
+                <motion.div
+                  key={skill.name}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.2 }}
+                  className="group p-5 rounded-2xl bg-zinc-950/80 border border-white/[0.08] hover:border-[#2997ff]/30 hover:bg-zinc-900/50 transition-all duration-150 flex flex-col justify-between shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="font-semibold text-white text-base tracking-tight font-display group-hover:text-[#2997ff] transition-colors">
+                        {skill.name}
+                      </span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/[0.04] text-zinc-400 border border-white/[0.06]">
+                        {meta.tag}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed font-sans">
+                      {meta.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between text-[11px] font-mono">
+                    <span className="text-zinc-500">{skill.category}</span>
+                    <span className="text-emerald-400 flex items-center gap-1.5 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      Active Stack
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+
+        {filteredSkills.length === 0 && (
+          <div className="py-12 text-center text-sm text-zinc-500 font-mono">
+            No technologies found matching &ldquo;{searchQuery}&rdquo;.
+          </div>
+        )}
+
       </div>
     </section>
   );

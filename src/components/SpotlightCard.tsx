@@ -50,16 +50,19 @@ export default function SpotlightCard({
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-3xl border border-white/5 bg-white/[0.01] transition-colors hover:bg-white/[0.02] ${className}`}
+      className={`relative rounded-3xl border border-white/5 bg-white/[0.01] transition-colors hover:bg-white/[0.02] ${className}`}
+      style={{ transformStyle: "preserve-3d" }}
     >
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-0"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.1), transparent 40%)`,
-        }}
-      />
-      <div className="relative z-10 h-full w-full">
+      <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-0">
+        <div
+          className="absolute -inset-px opacity-0 transition duration-300"
+          style={{
+            opacity,
+            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.1), transparent 40%)`,
+          }}
+        />
+      </div>
+      <div className="relative z-10 h-full w-full" style={{ transformStyle: "preserve-3d" }}>
         {children}
       </div>
     </motion.div>

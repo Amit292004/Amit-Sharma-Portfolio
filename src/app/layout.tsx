@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Plus_Jakarta_Sans, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollProvider from "@/components/ScrollProvider";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import Noise from "@/components/Noise";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Amit Sharma | AI & Web Developer",
@@ -111,7 +126,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
+      <body className={`${plusJakartaSans.variable} ${bricolageGrotesque.variable} ${jetbrainsMono.variable} font-sans antialiased bg-black text-[#f5f5f7] selection:bg-[#2997ff]/25 selection:text-white`}>
         <Noise />
         <ScrollProvider>
           <ScrollProgressBar />

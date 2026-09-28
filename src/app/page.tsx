@@ -10,8 +10,7 @@ import CertificationsSection from "@/components/CertificationsSection";
 import InternshipsSection from "@/components/InternshipsSection";
 
 import ContactSection from "@/components/ContactSection";
-import SplashScreen from "@/components/SplashScreen";
-
+import BackToTop from "@/components/BackToTop";
 
 export default async function Home() {
   let achievements: any[] = [];
@@ -38,6 +37,16 @@ export default async function Home() {
   }
 
   if (!profile) {
+    try {
+      const fs = await import("fs/promises");
+      const path = await import("path");
+      const localFile = path.join(process.cwd(), "public", "profile.json");
+      const content = await fs.readFile(localFile, "utf-8");
+      profile = JSON.parse(content);
+    } catch {}
+  }
+
+  if (!profile) {
     profile = { id: "default", name: "Amit Sharma", role: "CS Engineering", avatarUrl: null, available: true, createdAt: new Date(), updatedAt: new Date() };
   }
 
@@ -58,43 +67,66 @@ export default async function Home() {
     ];
   }
 
-  const Divider = () => (
-    <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent my-8 max-w-5xl mx-auto" />
+  const SectionBorder = () => (
+    <div className="w-full max-w-6xl mx-auto px-6">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+    </div>
   );
 
   return (
-    <main className="min-h-screen selection:bg-blue-500/30">
-      <SplashScreen />
+    <main className="min-h-screen bg-black text-[#f5f5f7]">
       <Navbar />
       <HeroSection profile={{ name: profile.name, role: profile.role, avatarUrl: profile.avatarUrl, available: profile.available }} />
 
-      <Divider />
+      <SectionBorder />
       <AboutSection />
 
-      <Divider />
+      <SectionBorder />
       <SkillsSection skills={skills} />
 
-      <Divider />
+      <SectionBorder />
       <ProjectsSection projects={projects} />
 
-      <Divider />
+      <SectionBorder />
       <InternshipsSection internships={internships} />
 
-      <Divider />
+      <SectionBorder />
       <TimelineSection
         achievements={achievements.map((a: any) => ({ ...a, date: a.date.toString() }))}
         courses={courses.map((c: any) => ({ ...c, dateCompleted: c.dateCompleted.toString() }))}
       />
 
-      <Divider />
+      <SectionBorder />
       <CertificationsSection certifications={certifications} />
 
-
-      <Divider />
+      <SectionBorder />
       <ContactSection />
 
-      <footer className="py-8 text-center text-gray-600 text-sm border-t border-white/5 bg-black pb-24 md:pb-8">
-        <p>© {new Date().getFullYear()} Amit Sharma. Built with Next.js & ❤️</p>
+      <footer className="py-12 border-t border-white/[0.08] bg-[#050507] text-zinc-500 text-xs font-mono">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <span>© {new Date().getFullYear()} Amit Sharma.</span>
+            <span>·</span>
+            <span className="text-zinc-400">Computer Science & Systems</span>
+          </div>
+
+          <div className="flex items-center gap-6 text-zinc-400">
+            <a href="https://github.com/Amit292004" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/amit-sharma-142a26359/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              LinkedIn
+            </a>
+            <a href="https://www.instagram.com/am____it_292004/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              Instagram
+            </a>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <span className="text-zinc-500">Next.js 16 · React 19</span>
+            <BackToTop />
+          </div>
+        </div>
       </footer>
     </main>
   );
