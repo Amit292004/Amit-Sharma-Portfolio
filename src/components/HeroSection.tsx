@@ -133,7 +133,7 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
                   Founder & Dev
                 </p>
                 <p className="text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 truncate" title="Bounce Back Academy (EdTech Platform)">
-                  Bounce Back
+                  Bounce Back Academy
                 </p>
               </div>
             </div>
