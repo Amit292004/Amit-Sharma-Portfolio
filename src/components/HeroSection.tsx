@@ -109,30 +109,34 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             transition={{ duration: 0.5, delay: 0.35 }}
             className="pt-3.5 pb-4 border-y border-white/[0.08] max-w-xl w-full"
           >
-            <div className="grid grid-cols-3 gap-2 sm:gap-6 items-start">
-              <div className="min-w-0 pr-1 sm:pr-0">
-                <p className="text-sm xs:text-base sm:text-xl lg:text-2xl font-bold text-white font-display tracking-tight truncate sm:whitespace-nowrap" title="IIT Guwahati">
+            <div className="flex items-center justify-between gap-2 sm:gap-6">
+              <div className="min-w-0 pr-1 sm:pr-0 shrink-0">
+                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight whitespace-nowrap" title="IIT Guwahati">
                   IIT Guwahati
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 truncate">
+                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap">
                   AI/ML Intern
                 </p>
               </div>
 
-              <div className="min-w-0 px-1 sm:px-0 text-center sm:text-left border-x border-white/[0.06] sm:border-0">
-                <p className="text-sm xs:text-base sm:text-xl lg:text-2xl font-bold text-white font-display tracking-tight">
+              <div className="h-7 sm:h-8 w-px bg-white/[0.08] shrink-0" />
+
+              <div className="min-w-0 px-1 sm:px-0 text-center shrink-0">
+                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight">
                   8.62
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 truncate">
+                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap">
                   B.Tech CGPA
                 </p>
               </div>
 
-              <div className="min-w-0 pl-1 sm:pl-0 text-right sm:text-left">
-                <p className="text-sm xs:text-base sm:text-xl lg:text-2xl font-bold text-white font-display tracking-tight truncate sm:whitespace-nowrap" title="Founder & Dev">
+              <div className="h-7 sm:h-8 w-px bg-white/[0.08] shrink-0" />
+
+              <div className="min-w-0 pl-1 sm:pl-0 text-right shrink-0">
+                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight whitespace-nowrap" title="Founder & Dev">
                   Founder & Dev
                 </p>
-                <p className="text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 truncate" title="Bounce Back Academy (EdTech Platform)">
+                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-400 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap" title="Bounce Back Academy (EdTech Platform)">
                   Bounce Back Academy
                 </p>
               </div>
