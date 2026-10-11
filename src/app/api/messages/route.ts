@@ -2,16 +2,31 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import { getLocalMessages, markMessageRead, deleteMessage } from "@/lib/messages";
 
 // Admin only — view all contact form submissions
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  // 1. Try DB first if DATABASE_URL is defined
+  if (process.env.DATABASE_URL) {
+    try {
+      const messages = await prisma.message.findMany({ orderBy: { createdAt: "desc" } });
+      if (messages && messages.length > 0) {
+        return NextResponse.json(messages);
+      }
+    } catch (error) {
+      console.warn("Prisma messages fetch failed, falling back to local storage:", error);
+    }
+  }
+
+  // 2. Fall back to local messages file
   try {
-    const messages = await prisma.message.findMany({ orderBy: { createdAt: "desc" } });
-    return NextResponse.json(messages);
-  } catch (error) {
-    console.error("Error fetching messages:", error);
+    const localMessages = await getLocalMessages();
+    return NextResponse.json(localMessages);
+  } catch (err) {
+    console.error("Error fetching local messages:", err);
     return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
   }
 }
@@ -22,8 +37,8 @@ export async function PUT(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { id, read } = await req.json();
-    const msg = await prisma.message.update({ where: { id }, data: { read } });
-    return NextResponse.json(msg);
+    await markMessageRead(id, !!read);
+    return NextResponse.json({ success: true, id, read });
   } catch (error) {
     console.error("Error updating message:", error);
     return NextResponse.json({ error: "Failed to update message" }, { status: 500 });
@@ -36,7 +51,7 @@ export async function DELETE(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { id } = await req.json();
-    await prisma.message.delete({ where: { id } });
+    await deleteMessage(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting message:", error);

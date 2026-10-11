@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Send, MapPin, Copy, Check, ArrowUpRight } from "lucide-react";
+import { Send, MapPin, Copy, Check, ArrowUpRight, Mail, MessageSquare, AlertCircle, RefreshCw } from "lucide-react";
 
 export default function ContactSection() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
 
   const emailAddress = "amitsharma72020@gmail.com";
+  const phoneNumber = "+917628024274";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(emailAddress);
@@ -15,31 +20,63 @@ export default function ContactSection() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const getMailtoUrl = () => {
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${name || "Visitor"}`);
+    const body = encodeURIComponent(
+      `Hi Amit,\n\n${message || "I would like to connect with you regarding an opportunity."}\n\nBest regards,\n${name || "Anonymous"}\nEmail: ${email || "Not provided"}`
+    );
+    return `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+  };
+
+  const getWhatsAppUrl = () => {
+    const text = encodeURIComponent(
+      `Hi Amit! My name is ${name || "a visitor"}${email ? ` (${email})` : ""}.\n\n${message || "I saw your portfolio and would love to connect."}`
+    );
+    return `https://wa.me/917628024274?text=${text}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("loading");
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setStatus("error");
+      setErrorMessage("Please fill out all fields before sending.");
+      return;
+    }
 
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
-    };
+    setStatus("loading");
+    setErrorMessage("");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
       });
-      if (res.ok) {
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && (data.success || !data.error)) {
         setStatus("success");
       } else {
         setStatus("error");
+        setErrorMessage(data?.error || "Unable to send message to the server.");
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Network error occurred. You can still send your message directly via email or WhatsApp below.");
     }
+  };
+
+  const handleReset = () => {
+    setName("");
+    setEmail("");
+    setMessage("");
+    setStatus("idle");
+    setErrorMessage("");
   };
 
   return (
@@ -70,6 +107,7 @@ export default function ContactSection() {
                 <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider">Direct Email</span>
                 <button
                   onClick={handleCopyEmail}
+                  type="button"
                   className="interactive-tap inline-flex items-center gap-1.5 text-xs font-mono text-zinc-300 hover:text-white px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.08] transition-colors cursor-pointer"
                 >
                   {copied ? (
@@ -98,7 +136,7 @@ export default function ContactSection() {
               <div>
                 <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">Phone / WhatsApp</span>
                 <a
-                  href="tel:+917628024274"
+                  href={`tel:${phoneNumber}`}
                   className="text-base font-mono font-medium text-white hover:text-zinc-300 transition-colors"
                 >
                   +91 76280 24274
@@ -166,77 +204,166 @@ export default function ContactSection() {
 
           {/* Contact Form */}
           <div className="lg:col-span-7">
-            <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-zinc-950/80 border border-white/[0.08] space-y-5 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-all font-sans"
-                    placeholder="Jane Doe"
-                  />
+            <div className="p-6 sm:p-8 rounded-2xl bg-zinc-950/80 border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+              {status === "success" ? (
+                <div className="py-8 text-center space-y-6">
+                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
+                    <Check className="w-8 h-8" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-white font-display">Message Sent Successfully!</h3>
+                    <p className="text-zinc-400 text-sm max-w-md mx-auto">
+                      Thank you for reaching out, {name || "there"}. Amit has received your message and will respond to <span className="text-zinc-200 font-mono">{email}</span> as soon as possible.
+                    </p>
+                  </div>
+                  
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a
+                      href={getWhatsAppUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-xs font-mono text-white transition-colors"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Also Chat on WhatsApp</span>
+                    </a>
+                    <button
+                      onClick={handleReset}
+                      type="button"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-semibold transition-colors cursor-pointer"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Send Another Message</span>
+                    </button>
+                  </div>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+                        Your Name
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#2997ff]/60 transition-all font-sans"
+                        placeholder="Jane Doe"
+                      />
+                    </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    required
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-all font-sans"
-                    placeholder="jane@organization.com"
-                  />
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        required
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#2997ff]/60 transition-all font-sans"
+                        placeholder="jane@organization.com"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
-                  Message
-                </label>
-                <textarea
-                  required
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-all resize-none font-sans"
-                  placeholder="Tell me about your team, project, or role..."
-                />
-              </div>
+                  <div>
+                    <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      required
+                      id="message"
+                      name="message"
+                      rows={5}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="w-full bg-black border border-white/[0.09] rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#2997ff]/60 transition-all resize-none font-sans"
+                      placeholder="Tell me about your team, project, or role..."
+                    />
+                  </div>
 
-              <button
-                type="submit"
-                disabled={status === "loading" || status === "success"}
-                className="interactive-tap w-full bg-white hover:bg-zinc-200 text-black font-semibold text-sm py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm disabled:opacity-50 cursor-pointer font-sans"
-              >
-                {status === "loading" ? (
-                  <span>Sending message...</span>
-                ) : status === "success" ? (
-                  <span className="flex items-center gap-1.5 text-emerald-800">
-                    <Check className="w-4 h-4 text-emerald-600" />
-                    Message delivered successfully
-                  </span>
-                ) : (
-                  <>
-                    <span>Send Message</span>
-                    <Send className="w-3.5 h-3.5 text-black" />
-                  </>
-                )}
-              </button>
+                  {status === "error" && (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs space-y-3 font-sans">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-red-200">Delivery Notice</p>
+                          <p className="text-zinc-300 mt-0.5 leading-relaxed">
+                            {errorMessage || "The message could not be sent to the server. Don't worry—you can send your pre-filled message instantly with one click below:"}
+                          </p>
+                        </div>
+                      </div>
 
-              {status === "error" && (
-                <p className="text-xs font-mono text-red-400 text-center">
-                  Error sending message. Please reach out directly to amitsharma72020@gmail.com
-                </p>
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <a
+                          href={getMailtoUrl()}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-colors shadow-sm"
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          <span>Open in Email App</span>
+                        </a>
+
+                        <a
+                          href={getWhatsAppUrl()}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold text-xs hover:bg-emerald-600 transition-colors shadow-sm"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>Send via WhatsApp</span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-3 pt-1">
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="interactive-tap w-full bg-white hover:bg-zinc-200 text-black font-semibold text-sm py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm disabled:opacity-50 cursor-pointer font-sans"
+                    >
+                      {status === "loading" ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                          Sending message...
+                        </span>
+                      ) : (
+                        <>
+                          <span>Send Message</span>
+                          <Send className="w-3.5 h-3.5 text-black" />
+                        </>
+                      )}
+                    </button>
+
+                    <div className="flex items-center justify-center gap-4 text-xs font-mono text-zinc-500 pt-1">
+                      <span>Or reach out directly:</span>
+                      <a
+                        href={getMailtoUrl()}
+                        className="text-zinc-400 hover:text-white underline underline-offset-4 transition-colors"
+                      >
+                        Email Client
+                      </a>
+                      <span>·</span>
+                      <a
+                        href={getWhatsAppUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 hover:text-white underline underline-offset-4 transition-colors"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </form>
               )}
-            </form>
+            </div>
           </div>
 
         </div>
