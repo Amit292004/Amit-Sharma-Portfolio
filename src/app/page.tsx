@@ -54,6 +54,16 @@ export default async function Home() {
     profile = { id: "default", name: "Amit Sharma", role: "CS Engineering", avatarUrl: null, available: true, createdAt: new Date(), updatedAt: new Date() };
   }
 
+  if (certifications.length === 0) {
+    try {
+      const fs = await import("fs/promises");
+      const path = await import("path");
+      const localFile = path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "certifications.json");
+      const content = await fs.readFile(localFile, "utf-8");
+      certifications = JSON.parse(content);
+    } catch {}
+  }
+
   // Fallback static data (used only when DB is empty)
   if (achievements.length === 0) {
     achievements = [

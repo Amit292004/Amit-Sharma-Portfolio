@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cert_1791708193144_5ri3",
+    "title": "a",
+    "issuer": "yu",
+    "dateCompleted": "june 2025",
+    "credentialUrl": null,
+    "imageUrl": "/uploads/1791708191119-ChatGPT_Image_Sep_19__2026__08_38_27_AM.png",
+    "createdAt": "2026-10-11T08:43:13.144Z",
+    "updatedAt": "2026-10-11T08:43:13.144Z"
+  },
+  {
+    "id": "1",
+    "title": "Cyber Security Boot Camp",
+    "issuer": "NIELIT (Score: 94/100)",
+    "dateCompleted": "2024",
+    "credentialUrl": null,
+    "imageUrl": null
+  },
+  {
+    "id": "2",
+    "title": "Data Science & Generative AI",
+    "issuer": "Codebasics",
+    "dateCompleted": "2025",
+    "credentialUrl": null,
+    "imageUrl": null
+  },
+  {
+    "id": "3",
+    "title": "Full-Stack Web Development",
+    "issuer": "Apna College",
+    "dateCompleted": "2025",
+    "credentialUrl": null,
+    "imageUrl": null
+  },
+  {
+    "id": "4",
+    "title": "DSA with C++ Foundation",
+    "issuer": "PW Skills",
+    "dateCompleted": "2025",
+    "credentialUrl": null,
+    "imageUrl": null
+  }
+]

@@ -52,6 +52,7 @@ type Cert = {
   issuer: string;
   dateCompleted: string;
   credentialUrl?: string | null;
+  imageUrl?: string | null;
 };
 
 type Internship = {
@@ -102,7 +103,8 @@ export default function DashboardClient({
 
   // Certs
   const [certs, setCerts] = useState<Cert[]>([]);
-  const [certForm, setCertForm] = useState({ title: "", issuer: "", dateCompleted: "", credentialUrl: "" });
+  const [certForm, setCertForm] = useState({ title: "", issuer: "", dateCompleted: "", credentialUrl: "", imageUrl: "" });
+  const [uploadingCertImage, setUploadingCertImage] = useState(false);
 
   // Internships
   const [internships, setInternships] = useState<Internship[]>([]);
@@ -161,10 +163,43 @@ export default function DashboardClient({
     setSkills(skills.filter(s => s.id !== id));
   };
 
+  const handleCertImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingCertImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setCertForm((prev) => ({ ...prev, imageUrl: data.url }));
+      } else {
+        alert(data.error || "Failed to upload certificate image");
+      }
+    } catch {
+      alert("Error uploading image");
+    } finally {
+      setUploadingCertImage(false);
+    }
+  };
+
   const handleAddCert = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch("/api/certifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(certForm) });
-    if (res.ok) { const c = await res.json(); setCerts([...certs, c]); setCertForm({ title: "", issuer: "", dateCompleted: "", credentialUrl: "" }); }
+    if (res.ok) {
+      const c = await res.json();
+      setCerts([c, ...certs]);
+      setCertForm({ title: "", issuer: "", dateCompleted: "", credentialUrl: "", imageUrl: "" });
+    } else {
+      alert("Failed to add certification");
+    }
   };
 
   const handleDeleteCert = async (id: string) => {
@@ -791,19 +826,93 @@ export default function DashboardClient({
                   <input type="text" value={certForm.credentialUrl} onChange={e => setCertForm({...certForm, credentialUrl: e.target.value})}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="https://..." />
                 </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Certificate Image / Document (optional)</label>
+                  
+                  {certForm.imageUrl ? (
+                    <div className="relative mb-3 rounded-xl overflow-hidden border border-white/10 bg-black/60 p-2.5 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <img src={certForm.imageUrl} alt="Certificate preview" className="w-14 h-14 object-cover rounded-lg border border-white/10 shrink-0 bg-zinc-900" />
+                        <div className="min-w-0">
+                          <p className="text-xs text-white font-medium truncate">Certificate Image Attached</p>
+                          <p className="text-[10px] text-gray-400 font-mono truncate">{certForm.imageUrl}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setCertForm({ ...certForm, imageUrl: "" })}
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-colors shrink-0 cursor-pointer"
+                        title="Remove image"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : null}
+
+                  <div className="flex gap-2">
+                    <label className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-white/20 bg-white/[0.02] hover:bg-white/[0.05] hover:border-yellow-500/50 cursor-pointer transition-all text-xs font-medium ${uploadingCertImage ? "opacity-50 pointer-events-none" : ""}`}>
+                      {uploadingCertImage ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin text-yellow-500" />
+                          <span className="text-gray-300">Uploading certificate...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-4 h-4 text-yellow-500" />
+                          <span className="text-gray-300">Upload Certificate File (PNG, JPG, WebP)</span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleCertImageUpload}
+                        disabled={uploadingCertImage}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      value={certForm.imageUrl}
+                      onChange={(e) => setCertForm({ ...certForm, imageUrl: e.target.value })}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      placeholder="Or paste image URL (https://...)"
+                    />
+                  </div>
+                </div>
                 <button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-xl transition-all cursor-pointer">Add Certification</button>
               </form>
             </div>
             <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
               <h2 className="text-xl font-bold mb-6">Current Certifications ({certs.length})</h2>
-              <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
                 {certs.map(c => (
-                  <div key={c.id} className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/5 rounded-xl">
-                    <div>
-                      <p className="font-semibold text-white text-sm">{c.title}</p>
-                      <p className="text-xs text-gray-500">{c.issuer} · {c.dateCompleted}</p>
+                  <div key={c.id} className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/5 rounded-xl gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      {c.imageUrl ? (
+                        <img
+                          src={c.imageUrl}
+                          alt={c.title}
+                          className="w-12 h-12 object-cover rounded-lg border border-white/10 shrink-0 bg-black/40"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-gray-500">
+                          <Award className="w-5 h-5" />
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <p className="font-semibold text-white text-sm truncate">{c.title}</p>
+                        <p className="text-xs text-gray-500 truncate">{c.issuer} · {c.dateCompleted}</p>
+                        {c.credentialUrl && (
+                          <a href={c.credentialUrl} target="_blank" rel="noopener noreferrer" className="text-[11px] text-yellow-500 hover:underline block truncate mt-0.5">
+                            Verify Credential ↗
+                          </a>
+                        )}
+                      </div>
                     </div>
-                    <button onClick={() => handleDeleteCert(c.id)} className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer">
+                    <button onClick={() => handleDeleteCert(c.id)} className="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer shrink-0">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
