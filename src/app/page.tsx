@@ -140,7 +140,6 @@ export default async function Home() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-zinc-500">Next.js 16 · React 19</span>
             <BackToTop />
           </div>
         </div>

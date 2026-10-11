@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Mail, ExternalLink, MapPin, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Mail, ExternalLink, MapPin, CheckCircle2 } from "lucide-react";
 import Particles from "./Particles";
 import ThreeDCanvas from "./ThreeDCanvas";
 
@@ -107,37 +107,33 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="pt-3.5 pb-4 border-y border-white/[0.08] max-w-xl w-full"
+            className="w-full max-w-xl p-3 sm:p-3.5 rounded-2xl bg-zinc-950/70 border border-white/[0.08] backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
           >
-            <div className="flex items-center justify-between gap-2 sm:gap-6">
-              <div className="min-w-0 pr-1 sm:pr-0 shrink-0">
-                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight whitespace-nowrap" title="IIT Guwahati">
+            <div className="grid grid-cols-3 divide-x divide-white/[0.08] items-center">
+              <div className="px-1 sm:px-3 text-center">
+                <p className="text-xs sm:text-base font-bold text-white font-display tracking-tight">
                   IIT Guwahati
                 </p>
-                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap">
+                <p className="text-[10px] sm:text-xs text-zinc-400 font-mono tracking-wider uppercase mt-0.5">
                   AI/ML Intern
                 </p>
               </div>
 
-              <div className="h-7 sm:h-8 w-px bg-white/[0.08] shrink-0" />
-
-              <div className="min-w-0 px-1 sm:px-0 text-center shrink-0">
-                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight">
-                  8.62
+              <div className="px-1 sm:px-3 text-center">
+                <p className="text-xs sm:text-base font-bold text-white font-display tracking-tight">
+                  8.62 CGPA
                 </p>
-                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap">
-                  B.Tech CGPA
+                <p className="text-[10px] sm:text-xs text-zinc-400 font-mono tracking-wider uppercase mt-0.5">
+                  B.Tech CS
                 </p>
               </div>
 
-              <div className="h-7 sm:h-8 w-px bg-white/[0.08] shrink-0" />
-
-              <div className="min-w-0 pl-1 sm:pl-0 text-right shrink-0">
-                <p className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-white font-display tracking-tight whitespace-nowrap" title="Founder & Dev">
-                  Founder & Dev
+              <div className="px-1 sm:px-3 text-center" title="Bounce Back Academy (EdTech Platform)">
+                <p className="text-xs sm:text-base font-bold text-white font-display tracking-tight whitespace-nowrap">
+                  Bounce Back<span className="hidden sm:inline"> Academy</span>
                 </p>
-                <p className="text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-400 uppercase tracking-wider font-mono mt-0.5 whitespace-nowrap" title="Bounce Back Academy (EdTech Platform)">
-                  Bounce Back Academy
+                <p className="text-[10px] sm:text-xs text-zinc-400 font-mono tracking-wider uppercase mt-0.5">
+                  Founder & Dev
                 </p>
               </div>
             </div>
@@ -148,12 +144,12 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2 w-full max-w-xl"
+            className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3 pt-2 w-full max-w-xl"
           >
             <div className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center sm:gap-3 w-full sm:w-auto">
               <a
                 href="#projects"
-                className="interactive-tap inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 font-semibold text-xs sm:text-sm text-black bg-white hover:bg-zinc-200 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.12)] cursor-pointer"
+                className="interactive-tap inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 font-semibold text-xs sm:text-sm text-black bg-white hover:bg-zinc-200 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.12)] cursor-pointer whitespace-nowrap"
               >
                 <span>View Projects</span>
                 <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black" />
@@ -161,34 +157,23 @@ export default function HeroSection({ profile }: { profile: ProfileProp }) {
 
               <a
                 href="#contact"
-                className="interactive-tap inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 font-medium text-xs sm:text-sm text-zinc-200 bg-white/[0.04] border border-white/[0.1] rounded-xl hover:bg-white/[0.08] hover:text-white transition-all cursor-pointer"
+                className="interactive-tap inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 font-medium text-xs sm:text-sm text-zinc-200 bg-white/[0.04] border border-white/[0.1] rounded-xl hover:bg-white/[0.08] hover:text-white transition-all cursor-pointer whitespace-nowrap"
               >
                 <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-400" />
                 <span>Contact Me</span>
               </a>
             </div>
 
-            <div className="flex items-center justify-center sm:justify-start gap-1.5 pt-1 sm:pt-0">
-              <a
-                href="/api/resume"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="interactive-tap inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-mono font-medium text-zinc-400 hover:text-white transition-colors"
-                title="View Resume"
-              >
-                <span>Resume</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-
-              <a
-                href="/api/resume"
-                download
-                className="interactive-tap p-2 text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.04]"
-                title="Download Resume PDF"
-              >
-                <Download className="w-4 h-4" />
-              </a>
-            </div>
+            <a
+              href="/api/resume"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="interactive-tap inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 font-mono text-xs font-medium text-zinc-300 bg-white/[0.04] border border-white/[0.08] hover:border-white/20 rounded-xl hover:bg-white/[0.08] hover:text-white transition-all shadow-sm cursor-pointer w-full sm:w-auto whitespace-nowrap"
+              title="View & Download Resume PDF"
+            >
+              <span>Resume (PDF)</span>
+              <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+            </a>
           </motion.div>
         </div>
 
