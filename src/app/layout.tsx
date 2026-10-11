@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollProvider from "@/components/ScrollProvider";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
 import Noise from "@/components/Noise";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -279,7 +278,6 @@ export default function RootLayout({
       <body className={`${plusJakartaSans.variable} ${bricolageGrotesque.variable} ${jetbrainsMono.variable} font-sans antialiased bg-black text-[#f5f5f7] selection:bg-[#2997ff]/25 selection:text-white`}>
         <Noise />
         <ScrollProvider>
-          <ScrollProgressBar />
           {children}
         </ScrollProvider>
       </body>
